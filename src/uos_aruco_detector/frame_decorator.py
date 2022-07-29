@@ -29,7 +29,7 @@ class FrameDecorator:
         self.scale = 3
         self.thickness = 4
 
-    def put_text(self, frame, msg, color, coord=None):
+    def draw_text(self, frame, msg, color, coord=None):
         if coord is None:
             coord = justify(msg, frame, self.font, self.scale, self.thickness)
         cv2.putText(
@@ -43,7 +43,7 @@ class FrameDecorator:
             cv2.LINE_AA,
         )
 
-    def put_border(self, frame, color, thickness=20):
+    def draw_border(self, frame, color, thickness=20):
         cv2.rectangle(frame, (0, 0), (frame.shape[1], frame.shape[0]), color, thickness)
 
     def show(self, frame):
