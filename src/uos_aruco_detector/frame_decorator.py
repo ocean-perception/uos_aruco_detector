@@ -5,7 +5,7 @@ class Colors:
     # -- BGR colour codes
     RED = (0, 0, 255)
     BLUE = (255, 0, 0)
-    GREE = (0, 255, 0)
+    GREEN = (0, 255, 0)
     YELLOW = (0, 255, 255)
     WHITE = (255, 255, 255)
 
@@ -42,9 +42,14 @@ class FrameDecorator:
             self.thickness,
             cv2.LINE_AA,
         )
+        return frame
 
     def draw_border(self, frame, color, thickness=20):
         cv2.rectangle(frame, (0, 0), (frame.shape[1], frame.shape[0]), color, thickness)
+        return frame
+
+    def stop(self):
+        cv2.destroyAllWindows()
 
     def show(self, frame):
         """Function to show the frame.

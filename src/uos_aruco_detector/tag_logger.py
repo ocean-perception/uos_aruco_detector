@@ -1,6 +1,10 @@
 import csv
 from pathlib import Path
 
+from .udp_broadcast_server import (
+    UDPBroadcastServer,
+)
+
 
 class TagLogger:
     def __init__(self, tag_id, tag_name, tag_color, log_dir):
@@ -12,31 +16,36 @@ class TagLogger:
             writer = csv.writer(file)
             writer.writerow(
                 [
-                    "Year",
-                    "Month",
-                    "Day",
-                    "Hour",
-                    "Minute",
-                    "Second",
-                    "Elapsed [s]",
+                    "epoch [s]",
+                    "elapsed [s]",
                     "x [m]",
                     "y [m]",
                     "z [m]",
-                    "Roll [deg]",
-                    "Pitch [deg]",
-                    "Yaw [deg]",
-                    "Broadcasted 1=Yes",
+                    "roll [deg]",
+                    "pitch [deg]",
+                    "yaw [deg]",
+                    "broadcasted 1=yes",
                 ]
             )
             file.close()
 
-    def log(self, time_list, elapsed_time, tag_position, tag_rotation, broadcasted):
+    def broadcast(self, udp_socket_server: UDPBroadcastServer):
+        # -- Broadcast the tag position and rotation
+        udp_socket_server.broadcast(
+            f"{self.tag_id},{self.current_time},{self.elapsed_time},{self.tag_position},{self.tag_rotation}"
+        )
+
+    def log(self, current_time, elapsed_time, tag_position, tag_rotation, broadcasted):
+        self.current_time = current_time
+        self.elapsed_time = elapsed_time
+        self.tag_position = tag_position
+        self.tag_rotation = tag_rotation
         # -- Log the detection of the tag
         with self.fname.open("a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(
                 [
-                    time_list,
+                    current_time,
                     elapsed_time,
                     tag_position[0],
                     tag_position[1],

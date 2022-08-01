@@ -1,33 +1,68 @@
 from pathlib import Path
-import json
-import numpy as np
+import yaml
+from dataclasses import dataclass
+
+
+@dataclass
+class Marker:
+    OK: int = -1
+    CALIBRATION: int = -1
+    BROADCAST_NEVER: int = -1
+    BROADCAST_FREQ_1_HZ: int = -1
+    BROADCAST_FREQ_2_HZ: int = -1
+    BROADCAST_FREQ_5_HZ: int = -1
+    BROADCAST_FREQ_10_HZ: int = -1
+    BROADCAST_ALWAYS: int = -1
+    FRAME_NED: int = -1
+    FRAME_ENU: int = -1
+    SHUTDOWN: int = -1
+    PLATFORM_1: int = -1
+    PLATFORM_2: int = -1
+    PLATFORM_3: int = -1
+    PLATFORM_4: int = -1
+    PLATFORM_5: int = -1
 
 
 class Configuration:
     def __init__(self, filename):
         if not Path(filename).exists():
             raise FileNotFoundError(f"Configuration file {filename} not found")
-
         self.filename = filename
+        self.marker = Marker()
         self.load()
 
     def load(self):
-        config = json.load(self.filename)
+        f = self.filename.open("r")
+        config = yaml.safe_load(f)
         # -- Define path where all code is stored
-        path = config["Main Code Path"]
-        storage = config["USB Storage Path"]
+        self.logging_folder = config["logging_folder"]
+        self.usb_storage_path = config["usb_storage_path"]
         # --- Define Tags
-        marker_size = float(config["Marker Size"])  # [m]
-        CAL = float(config["CAL"])
-        SHUTDOWN = float(config["SHUTDOWN"])
-        OK = float(config["OK"])
-        ENU = float(config["ENU"])
-        NED = float(config["NED"])
-        SEND = float(config["SEND"])
-        # -- Logging variable, 1 -> logging is on; 0--> logging is off
-        logging = float(config["Enable Logging"])
-        # -- Broadcast position every # seconds. Default is 1, change via Aruco Code
-        F_delay = float(config["Default Broadcasting Period"])
-        coord_system = "ENU"
-        # -- List of tags that modify frequency and their corresponding value [TAG_ID, SECONDS]
-        frequencies = np.array([[30, 0], [31, 1], [32, 2], [33, 5], [34, 10], [35, -1]])
+        self.marker_size = float(config["defaults"]["marker_size"])  # [m]
+        self.marker.OK = int(config["markers"]["OK"])
+        self.marker.CALIBRATION = int(config["markers"]["CALIBRATION"])
+        self.marker.BROADCAST_NEVER = int(config["markers"]["BROADCAST_NEVER"])
+        self.marker.BROADCAST_FREQ_1_HZ = int(config["markers"]["BROADCAST_FREQ_1_HZ"])
+        self.marker.BROADCAST_FREQ_2_HZ = int(config["markers"]["BROADCAST_FREQ_2_HZ"])
+        self.marker.BROADCAST_FREQ_5_HZ = int(config["markers"]["BROADCAST_FREQ_5_HZ"])
+        self.marker.BROADCAST_FREQ_10_HZ = int(
+            config["markers"]["BROADCAST_FREQ_10_HZ"]
+        )
+        self.marker.BROADCAST_ALWAYS = int(config["markers"]["BROADCAST_ALWAYS"])
+        self.marker.FRAME_NED = int(config["markers"]["FRAME_NED"])
+        self.marker.FRAME_ENU = int(config["markers"]["FRAME_ENU"])
+        self.marker.SHUTDOWN = int(config["markers"]["SHUTDOWN"])
+
+        self.marker.PLATFORM_1 = int(config["markers"]["PLATFORM_1"])
+        self.marker.PLATFORM_2 = int(config["markers"]["PLATFORM_2"])
+        self.marker.PLATFORM_3 = int(config["markers"]["PLATFORM_3"])
+        self.marker.PLATFORM_4 = int(config["markers"]["PLATFORM_4"])
+        self.marker.PLATFORM_5 = int(config["markers"]["PLATFORM_5"])
+
+        self.udp_server_port = int(config["udp_server"]["port"])
+        self.udp_server_ip = config["udp_server"]["ip"]
+
+        self.broadcast_frequency = float(
+            config["defaults"]["broadcast_frequency"]  # [Hz]
+        )
+        self.frame = config["defaults"]["frame"]

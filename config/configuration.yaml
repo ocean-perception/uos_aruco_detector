@@ -1,0 +1,29 @@
+usb_storage_path: /media/usb/uos_aruco_detector
+logging_folder: logs
+
+udp_server:
+  ip: 255.255.255.255
+  port: 5555
+
+defaults:
+  broadcast_frequency: 10.0
+  frame: ENU
+  marker_size: 0.1
+
+markers:
+  OK: 49
+  CALIBRATION: 0
+  BROADCAST_NEVER: 30
+  BROADCAST_FREQ_1_HZ: 31
+  BROADCAST_FREQ_2_HZ: 32
+  BROADCAST_FREQ_5_HZ: 33
+  BROADCAST_FREQ_10_HZ: 34
+  BROADCAST_ALWAYS: 35
+  FRAME_NED: 47
+  FRAME_ENU: 46
+  SHUTDOWN: 48
+  PLATFORM_1: 1
+  PLATFORM_2: 2
+  PLATFORM_3: 3
+  PLATFORM_4: 4
+  PLATFORM_5: 5

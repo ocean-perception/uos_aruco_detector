@@ -3,7 +3,7 @@ import json
 
 
 class UDPBroadcastServer:
-    def __init__(self):
+    def __init__(self, ip, port):
         # -- Enable port reusage
         self.socket = socket.socket(
             socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP
@@ -14,8 +14,8 @@ class UDPBroadcastServer:
         self.socket.connect(("8.8.8.8", 80))
         ip = self.socket.getsockname()[0]
         self.socket.settimeout(None)
-        self.ip = "255.255.255.255"
-        self.port = 50000
+        self.ip = ip
+        self.port = port
         broadcast_data = {}
 
     def broadcast(self, message):
