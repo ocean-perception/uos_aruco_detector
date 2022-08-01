@@ -1,24 +1,28 @@
-from .configuration import Configuration
-from .udp_broadcast_server import UDPBroadcastServer
-from .tag_logger import TagLogger
-from .frame_decorator import FrameDecorator, Colors
-from .aruco_detector import ArucoDetector
-from .origin_reference import OriginReference
-import numpy as np
+import argparse
+import os
+import shutil
+import time
 from datetime import datetime
 from pathlib import Path
-import os
-import time
-import shutil
-import importlib
+
+import numpy as np
+
+from .aruco_detector import ArucoDetector
+from .configuration import Configuration
+from .frame_decorator import Colors, FrameDecorator
+from .origin_reference import OriginReference
+from .tag_logger import TagLogger
+from .udp_broadcast_server import UDPBroadcastServer
 
 
 def detected(ids, marker_id):
-    return marker_id in ids
+    """Check if a marker with the given id is detected."""
+    return np.any(ids == marker_id)
 
 
 class ArucoLocalisation:
-    def __init__(self):
+    def __init__(self, shutdown_at_end=True):
+        """Initialise the ArUco localisation system."""
         # Initialisation
         self.calibrated = False
         self.initial_time_s = 0.0
@@ -55,21 +59,19 @@ class ArucoLocalisation:
         self.tag_loggers = []
         self.stop_requested = False
 
-        self.config.logging_folder = Path(self.config.logging_folder)
-        if not self.config.logging_folder.exists():
-            self.config.logging_folder.mkdir()
-
         id_list = list(range(1, 6))
         for n in id_list:
-            tl = TagLogger(n, f"Tag_{n}", Colors.RED, self.config.logging_folder)
+            tl = TagLogger(n, f"Tag_{n}", Colors.RED, log_dir)
             self.tag_loggers.append(tl)
         while not self.stop_requested:
             self.loop()
 
-        print("Performing shutdown...")
-        # os.system("shutdown now h-")  # Uncomment for raspberry Pi
+        if shutdown_at_end:
+            print("Performing shutdown...")
+            os.system("shutdown now h-")  # Uncomment for raspberry Pi
 
     def loop(self):
+        """Main loop."""
         frame, corners, ids, rvecs, tvecs = self.detector.loop()
         # Wait until the system is calibrated
         if not self.calibrated:
@@ -81,22 +83,44 @@ class ArucoLocalisation:
             self.stop_requested = self.frame_decorator.show(frame)
 
     def draw_coordinate_system(self, frame) -> np.ndarray:
+        """Draw the coordinate system."""
         frame = self.detector.draw_axes(frame, self.origin.rvec, self.origin.tvec)
         return self.frame_decorator.draw_text(
             frame, self.config.frame, Colors.BLUE, (50, 100)
         )
 
     def get_time(self):
-        # -- Obtain current time and format it
+        """Get the current time in seconds."""
         current_time_s = datetime.now().timestamp()
         elapsed_time = current_time_s - self.initial_time_s
         return current_time_s, elapsed_time
 
     def reset_time(self):
+        """Reset the initial time."""
         self.initial_time_s = datetime.now().timestamp()
         self.last_broadcast_time_s = self.initial_time_s
 
     def calibration_loop(self, frame, ids, rvecs, tvecs) -> np.ndarray:
+        """Detect the calibration and OK marker to set the origin.
+
+        Parameters
+        ----------
+        frame : np.ndarray
+            Frame to display
+        corners : np.ndarray
+            Detected ArUco corners
+        ids : np.ndarray
+            Detected ArUco ids
+        rvecs : np.ndarray
+            Rotation vectors
+        tvecs : np.ndarray
+            Translation vectors
+
+        Returns
+        -------
+        np.ndarray
+            Frame to display
+        """
         if np.all(ids == self.config.marker.CALIBRATION):
             self.origin.set(rvecs[0, 0, :], tvecs[0, 0, :])
             frame = self.frame_decorator.draw_text(
@@ -105,7 +129,7 @@ class ArucoLocalisation:
                 Colors.YELLOW,
             )
             frame = self.frame_decorator.draw_border(frame, Colors.YELLOW)
-        elif np.any(ids == self.config.marker.OK) and self.origin.initialised:
+        elif detected(ids, self.config.marker.OK) and self.origin.initialised:
             self.calibrated = True
             self.reset_time()
         else:
@@ -118,6 +142,26 @@ class ArucoLocalisation:
         return frame
 
     def detection_loop(self, frame, corners, ids, rvecs, tvecs) -> np.ndarray:
+        """Detects the aruco markers and updates the tag loggers.
+
+        Parameters
+        ----------
+        frame : np.ndarray
+            Frame to display
+        corners : np.ndarray
+            Detected ArUco corners
+        ids : np.ndarray
+            Detected ArUco ids
+        rvecs : np.ndarray
+            Rotation vectors
+        tvecs : np.ndarray
+            Translation vectors
+
+        Returns
+        -------
+        np.ndarray
+            Frame to display
+        """
         frame = self.draw_coordinate_system(frame)
         frame = self.frame_decorator.draw_border(frame, Colors.GREEN)
         frame = self.detector.draw_markers(frame, corners, ids, rvecs, tvecs)
@@ -136,23 +180,23 @@ class ArucoLocalisation:
         if ids is None:
             return frame
 
-        if np.any(ids == marker.BROADCAST_ALWAYS) and np.any(ids == marker.OK):
+        if detected(ids, marker.BROADCAST_ALWAYS) and detected(ids, marker.OK):
             self.config.broadcast_frequency = -1
-        elif np.any(ids == marker.BROADCAST_FREQ_1_HZ) and np.any(ids == marker.OK):
+        elif detected(ids, marker.BROADCAST_FREQ_1_HZ) and detected(ids, marker.OK):
             self.config.broadcast_frequency = 1.0
-        elif np.any(ids == marker.BROADCAST_FREQ_2_HZ) and np.any(ids == marker.OK):
+        elif detected(ids, marker.BROADCAST_FREQ_2_HZ) and detected(ids, marker.OK):
             self.config.broadcast_frequency = 2.0
-        elif np.any(ids == marker.BROADCAST_FREQ_5_HZ) and np.any(ids == marker.OK):
+        elif detected(ids, marker.BROADCAST_FREQ_5_HZ) and detected(ids, marker.OK):
             self.config.broadcast_frequency = 5.0
-        elif np.any(ids == marker.BROADCAST_FREQ_10_HZ) and np.any(ids == marker.OK):
+        elif detected(ids, marker.BROADCAST_FREQ_10_HZ) and detected(ids, marker.OK):
             self.config.broadcast_frequency = 10.0
-        elif np.any(ids == marker.BROADCAST_NEVER) and np.any(ids == marker.OK):
+        elif detected(ids, marker.BROADCAST_NEVER) and detected(ids, marker.OK):
             self.config.broadcast_frequency = 0.0
-        elif np.any(ids == marker.FRAME_NED) and np.any(ids == marker.OK):
+        elif detected(ids, marker.FRAME_NED) and detected(ids, marker.OK):
             self.config.frame = "NED"
-        elif np.any(ids == marker.FRAME_ENU) and np.any(ids == marker.OK):
+        elif detected(ids, marker.FRAME_ENU) and detected(ids, marker.OK):
             self.config.frame = "ENU"
-        elif np.any(ids == marker.SHUTDOWN) and np.any(ids == marker.OK):
+        elif detected(ids, marker.SHUTDOWN) and detected(ids, marker.OK):
             # -- Wait one second and increase the count
             frame = frame - 100 * np.ones(frame.shape, dtype=np.uint8)
             self.frame_decorator.draw_text(frame, "Shutting down in 10 sec", Colors.RED)
@@ -205,4 +249,16 @@ class ArucoLocalisation:
 
 
 def main():
-    ArucoLocalisation()
+    """Main function."""
+    parser = argparse.ArgumentParser(
+        description="ArUco marker detection and localisation. Given a calibration"
+        + " setup this program will detect ArUco markers, log and broadcast its"
+        + " positions."
+    )
+    parser.add_argument(
+        "--no-shutdown",
+        action="store_false",
+        help="Don't shutdown at the end of the program",
+    )
+    args = parser.parse_args()
+    ArucoLocalisation(args.no_shutdown)

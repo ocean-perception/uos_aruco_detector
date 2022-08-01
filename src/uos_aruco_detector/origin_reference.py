@@ -1,7 +1,9 @@
-from .rotations import rotationMatrixToEulerAngles
 import csv
-import numpy as np
+
 import cv2
+import numpy as np
+
+from .rotations import rotationMatrixToEulerAngles
 
 
 class OriginReference:

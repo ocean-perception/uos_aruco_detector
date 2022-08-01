@@ -1,9 +1,7 @@
 import csv
 from pathlib import Path
 
-from .udp_broadcast_server import (
-    UDPBroadcastServer,
-)
+from .udp_broadcast_server import UDPBroadcastServer
 
 
 class TagLogger:

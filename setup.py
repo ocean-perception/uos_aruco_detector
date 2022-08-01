@@ -1,6 +1,7 @@
-from setuptools import setup, find_packages
 import os
 import os.path
+
+from setuptools import find_packages, setup
 
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",

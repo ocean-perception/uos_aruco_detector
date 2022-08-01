@@ -1,5 +1,5 @@
-import socket
 import json
+import socket
 
 
 class UDPBroadcastServer:
@@ -16,7 +16,6 @@ class UDPBroadcastServer:
         self.socket.settimeout(None)
         self.ip = ip
         self.port = port
-        broadcast_data = {}
 
     def broadcast(self, message):
         # -- Broadcast the dictionary as a bytes-like object (string-like info) and empties

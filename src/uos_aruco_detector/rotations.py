@@ -1,16 +1,17 @@
-import numpy as np
 import math
+
+import numpy as np
 
 # ------------------------------------------------------------------------------
 # ------- ROTATIONS https://www.learnopencv.com/rotation-matrix-to-euler-angles/
 # ------------------------------------------------------------------------------
 
+
 # -- Checks if a matrix is a valid rotation matrix.
 def isRotationMatrix(R):
     Rt = np.transpose(R)
     shouldBeIdentity = np.dot(Rt, R)
-    I = np.identity(3, dtype=R.dtype)
-    n = np.linalg.norm(I - shouldBeIdentity)
+    n = np.linalg.norm(np.identity(3, dtype=R.dtype) - shouldBeIdentity)
     return n < 1e-6
 
 

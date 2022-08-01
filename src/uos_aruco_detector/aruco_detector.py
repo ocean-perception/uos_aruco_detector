@@ -25,7 +25,7 @@ class ArucoDetector:
         # -- Convert to gray scale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # -- Find the aruco markers
-        corners, ids, rejectedImgPoints = aruco.detectMarkers(
+        corners, ids, _ = aruco.detectMarkers(
             gray, self.aruco_dict, parameters=self.parameters
         )
         rvecs = []
