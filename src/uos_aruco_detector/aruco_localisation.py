@@ -180,3 +180,7 @@ class ArucoLocalisation:
                 if broadcast:
                     self.tag_loggers[4].broadcast(self.server)
         return frame
+
+
+def main():
+    ArucoLocalisation()
