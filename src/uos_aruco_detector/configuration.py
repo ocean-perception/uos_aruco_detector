@@ -62,6 +62,9 @@ class Configuration:
         self.udp_server_port = int(config["udp_server"]["port"])
         self.udp_server_ip = config["udp_server"]["ip"]
 
+        self.camera_matrix = config["camera"]["matrix"]
+        self.camera_distortion = config["camera"]["distortion"]
+
         self.broadcast_frequency = float(
             config["defaults"]["broadcast_frequency"]  # [Hz]
         )

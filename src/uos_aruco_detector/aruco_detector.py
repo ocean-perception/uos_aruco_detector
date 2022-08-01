@@ -4,14 +4,10 @@ import numpy as np
 
 
 class ArucoDetector:
-    def __init__(self, configuration_path):
+    def __init__(self, camera_matrix, camera_distortion):
         # --- Get the camera calibration path and parameters
-        self.camera_matrix = np.loadtxt(
-            configuration_path / "cameraMatrix_webcam.txt", delimiter=","
-        )
-        self.camera_distortion = np.loadtxt(
-            configuration_path / "cameraDistortion_webcam.txt", delimiter=","
-        )
+        self.camera_matrix = np.array(camera_matrix)
+        self.camera_distortion = np.array(camera_distortion)
         # --- Define the aruco dictionary
         self.aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_100)
         self.parameters = aruco.DetectorParameters_create()

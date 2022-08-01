@@ -9,6 +9,7 @@ from datetime import datetime
 from pathlib import Path
 import os
 import time
+import shutil
 
 
 def detected(ids, marker_id):
@@ -21,14 +22,34 @@ class ArucoLocalisation:
         self.calibrated = False
         self.initial_time_s = 0.0
         self.last_broadcast_time_s = 0.0
-        configuration_path = Path(__file__).resolve().parents[2] / "config"
-        self.config = Configuration(configuration_path / "configuration.yaml")
+
+        home_dir = Path.home()
+        app_dir = home_dir / "uos_aruco_detector"
+        log_dir = app_dir / "log"
+        config_dir = app_dir / "config"
+
+        if not log_dir.exists():
+            log_dir.mkdir(parents=True)
+        if not config_dir.exists():
+            config_dir.mkdir(parents=True)
+
+        config_file = config_dir / "configuration.yaml"
+        if not config_file.exists():
+            default_path = Path(__file__).resolve().parents[2] / "config"
+            default_configuration_file = default_path / "configuration.yaml"
+            print("Copying default configuration to {}".format(config_file))
+            # Copy the default configuration file to the config directory
+            shutil.copy(str(default_configuration_file), str(config_file))
+
+        self.config = Configuration(config_file)
         self.server = UDPBroadcastServer(
             self.config.udp_server_ip, self.config.udp_server_port
         )
         self.frame_decorator = FrameDecorator()
-        self.detector = ArucoDetector(configuration_path)
-        self.origin = OriginReference(configuration_path)
+        self.detector = ArucoDetector(
+            self.config.camera_matrix, self.config.camera_distortion
+        )
+        self.origin = OriginReference(config_dir)
 
         self.tag_loggers = []
         self.stop_requested = False
