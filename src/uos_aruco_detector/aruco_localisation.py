@@ -268,6 +268,8 @@ class ArucoLocalisation:
                 self.tag_loggers[4].log(time_list, elapsed_time, pos, rot, broadcast)
                 if broadcast:
                     self.tag_loggers[4].broadcast(self.server)
+            # Make sure to update the origin frame
+            self.origin.frame = self.config.frame
         return frame
 
 
