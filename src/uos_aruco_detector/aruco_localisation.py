@@ -28,6 +28,12 @@ class ArucoLocalisation:
         self.initial_time_s = 0.0
         self.last_broadcast_time_s = 0.0
 
+        print("Running ArUco localisation system")
+        if shutdown_at_end:
+            print("The system will shutdown at the end of the execution")
+        else:
+            print("WARNING: The system will NOT shutdown at the end of the execution")
+
         home_dir = Path.home()
         app_dir = home_dir / "uos_aruco_detector"
         log_dir = app_dir / "log"
@@ -47,6 +53,23 @@ class ArucoLocalisation:
             shutil.copy(str(default_configuration_file), str(config_file))
 
         self.config = Configuration(config_file)
+
+        if self.config.usb_storage_path != "":
+            self.config.usb_storage_path = Path(self.config.usb_storage_path)
+            if not self.config.usb_storage_path.exists():
+                print(
+                    "The USB storage path {} does not exist".format(
+                        self.config.usb_storage_path
+                    )
+                )
+                print("Reverting to turn off USB storage.")
+            else:
+                log_dir = self.config.usb_storage_path / self.config.logging_folder
+                if not log_dir.exists():
+                    log_dir.mkdir(parents=True)
+
+        print("Logging to {}".format(log_dir))
+
         self.server = UDPBroadcastServer(
             self.config.udp_server_ip, self.config.udp_server_port
         )

@@ -1,5 +1,5 @@
-usb_storage_path: /media/usb/uos_aruco_detector  # not used
-logging_folder: logs  # not used
+usb_storage_path: ""
+logging_folder: "logs"
 
 udp_server:
   ip: 255.255.255.255
