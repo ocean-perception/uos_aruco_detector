@@ -47,5 +47,21 @@ class FrameDecorator:
         cv2.rectangle(frame, (0, 0), (frame.shape[1], frame.shape[0]), color, thickness)
 
     def show(self, frame):
+        """Function to show the frame.
+
+        Parameters
+        ----------
+        frame : np.ndarray
+            The frame to be shown.
+
+        Returns
+        -------
+        bool
+            True if the user requested to stop the program, False otherwise.
+        """
         cv2.imshow("Frame", frame)
-        cv2.waitKey(1)
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord("q"):
+            return True
+        else:
+            return False

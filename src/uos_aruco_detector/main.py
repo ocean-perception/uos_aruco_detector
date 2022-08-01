@@ -7,40 +7,66 @@ from origin_reference import OriginReference
 import numpy as np
 
 
-def main():
-    # Initialisation
-    calibrated = False
-    config = Configuration()
-    server = UDPBroadcastServer(config.udp_broadcast_port)
-    frame_decorator = FrameDecorator()
-    detector = ArucoDetector(config.aruco_configuration_path)
-    origin = OriginReference(config.output_folder)
+class ArucoLocalisation:
+    def __init__(self):
+        # Initialisation
+        self.calibrated = False
+        self.config = Configuration()
+        self.server = UDPBroadcastServer(config.udp_broadcast_port)
+        self.frame_decorator = FrameDecorator()
+        self.detector = ArucoDetector(config.aruco_configuration_path)
+        self.origin = OriginReference(config.output_folder)
 
-    id_list = list(range(1, 21))
-    tag_loggers = []
+        self.tag_loggers = []
+        self.stop_requested = False
 
-    for n in id_list:
-        tl = TagLogger(n, f"Tag_{n}", Colors.RED, config.output_folder)
-        tag_loggers.append(tl)
+        id_list = list(range(1, 21))
+        for n in id_list:
+            tl = TagLogger(n, f"Tag_{n}", Colors.RED, self.config.output_folder)
+            self.tag_loggers.append(tl)
+        while not self.stop_requested:
+            self.loop()
 
-    # Wait until the system is calibrated
-    while not calibrated:
-        frame, corners, ids, rvecs, tvecs = detector.loop()
-        if np.all(ids == config.marker.calibration):
-            origin.set(rvecs[0], tvecs[0])
-            frame_decorator.draw_text(
+    def loop(self):
+        frame, corners, ids, rvecs, tvecs = self.detector.loop()
+        # Wait until the system is calibrated
+        if not self.calibrated:
+            self.calibration_loop(frame, ids, rvecs, tvecs)
+        # When calibration has been achieved, the system is ready to start
+        else:
+            self.draw_coordinate_system(frame)
+            self.detection_loop(frame, corners, ids, rvecs, tvecs)
+        self.stop_requested = self.frame_decorator.show(frame)
+
+    def draw_coordinate_system(self, frame):
+        self.frame_decorator.draw_text(
+            frame, self.config.coordinate_system, Colors.BLUE, (50, 100)
+        )
+
+    def calibration_loop(self, frame, ids, rvecs, tvecs):
+        if np.all(ids == self.config.marker.calibration):
+            self.origin.set(rvecs[0], tvecs[0])
+            self.frame_decorator.draw_text(
                 frame,
                 "Please present the OK tag",
                 Colors.YELLOW,
             )
-            frame_decorator.draw_rectangle(frame, Colors.YELLOW)
-        elif np.any(ids == Oconfig.marker.ok) and origin.initialised:
-            calibrated = True
-        frame_decorator.show(frame)
+            self.frame_decorator.draw_rectangle(frame, Colors.YELLOW)
+        elif np.any(ids == self.config.marker.ok) and self.origin.initialised:
+            self.calibrated = True
+        else:
+            self.frame_decorator.draw_text(
+                frame,
+                "Please present the calibration tag",
+                Colors.YELLOW,
+            )
+            self.frame_decorator.draw_rectangle(frame, Colors.RED)
 
-    # When calibration has been achieved, the system is ready to start
-    while True:
+    def detection_loop(self, frame):
         pass
+
+def main():
+    
 
 
 if __name__ == "__main__":

@@ -60,3 +60,9 @@ class ArucoDetector:
         aruco.drawAxis(
             frame, self.camera_matrix, self.camera_distortion, rvecs, tvecs, 0.1
         )
+
+        # -- Show the origin
+
+    cv2.drawFrameAxes(
+        frame, camera_matrix, camera_distortion, rvec_ini, tvec_flipped_ini, 0.1
+    )
