@@ -52,10 +52,10 @@ def run_setup():
                 "uos_aruco_detector = uos_aruco_detector.aruco_localisation:main",
             ],
         },
+        include_package_data=True,
         package_data={
-            "": [
-                "config/*.yaml",
-                "config/*.txt",
+            "uos_aruco_detector": [
+                "src/uos_aruco_detector/configuration/*.yaml",
             ]
         },
     )

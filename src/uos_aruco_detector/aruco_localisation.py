@@ -10,6 +10,7 @@ from pathlib import Path
 import os
 import time
 import shutil
+import importlib
 
 
 def detected(ids, marker_id):
@@ -26,7 +27,7 @@ class ArucoLocalisation:
         home_dir = Path.home()
         app_dir = home_dir / "uos_aruco_detector"
         log_dir = app_dir / "log"
-        config_dir = app_dir / "config"
+        config_dir = app_dir / "configuration"
 
         if not log_dir.exists():
             log_dir.mkdir(parents=True)
@@ -35,7 +36,7 @@ class ArucoLocalisation:
 
         config_file = config_dir / "configuration.yaml"
         if not config_file.exists():
-            default_path = Path(__file__).resolve().parents[2] / "config"
+            default_path = Path(__file__).parent / "configuration"
             default_configuration_file = default_path / "configuration.yaml"
             print("Copying default configuration to {}".format(config_file))
             # Copy the default configuration file to the config directory
@@ -49,7 +50,7 @@ class ArucoLocalisation:
         self.detector = ArucoDetector(
             self.config.camera_matrix, self.config.camera_distortion
         )
-        self.origin = OriginReference(config_dir)
+        self.origin = OriginReference(log_dir)
 
         self.tag_loggers = []
         self.stop_requested = False
