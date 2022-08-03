@@ -23,11 +23,13 @@ def justify(text, frame, font, scale, thickness):
 
 
 class FrameDecorator:
-    def __init__(self):
+    def __init__(self, screen_width, screen_height):
         # -- Font for the text in the image
         self.font = cv2.FONT_HERSHEY_PLAIN
         self.scale = 3
         self.thickness = 4
+        self.screen_width = screen_width
+        self.screen_height = screen_height
         cv2.namedWindow('Frame', cv2.WINDOW_FREERATIO)
         cv2.setWindowProperty('Frame', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
@@ -66,6 +68,7 @@ class FrameDecorator:
         bool
             True if the user requested to stop the program, False otherwise.
         """
+        frame_resized = cv2.resize(frame, (self.screen_width, self.screen_height))
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
