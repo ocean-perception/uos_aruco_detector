@@ -15,10 +15,6 @@ class ArucoDetector:
         # --- Capture the videocamera (this may also be a video or a picture)
         self.cap = cv2.VideoCapture(0)
 
-        # -- Set the camera size as the one it was calibrated with
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
-
     def loop(self):
         # -- Read the frame
         _, frame = self.cap.read()
