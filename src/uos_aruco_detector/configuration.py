@@ -65,6 +65,9 @@ class Configuration:
 
         self.camera_matrix = config["camera"]["matrix"]
         self.camera_distortion = config["camera"]["distortion"]
+        
+        self.screen_width = config["defaults"].get("screen_width", 1920)
+        self.screen_height = config["defaults"].get("screen_height", 1920)
 
         self.broadcast_frequency = float(
             config["defaults"]["broadcast_frequency"]  # [Hz]
