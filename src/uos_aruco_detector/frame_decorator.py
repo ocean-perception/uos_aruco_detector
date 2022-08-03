@@ -69,7 +69,7 @@ class FrameDecorator:
             True if the user requested to stop the program, False otherwise.
         """
         frame_resized = cv2.resize(frame, (self.screen_width, self.screen_height))
-        cv2.imshow("Frame", frame)
+        cv2.imshow("Frame", frame_resized)
         key = cv2.waitKey(1) & 0xFF
         if key == ord("q"):
             return True
