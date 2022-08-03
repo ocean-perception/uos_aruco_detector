@@ -28,6 +28,8 @@ class FrameDecorator:
         self.font = cv2.FONT_HERSHEY_PLAIN
         self.scale = 3
         self.thickness = 4
+        cv2.namedWindow('Frame', cv2.WINDOW_FREERATIO)
+        cv2.setWindowProperty('Frame', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
     def draw_text(self, frame, msg, color, coord=None):
         if coord is None:
