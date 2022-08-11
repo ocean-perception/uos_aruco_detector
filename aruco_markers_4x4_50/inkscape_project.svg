@@ -31,9 +31,15 @@
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer2" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs2">
+    <rect
+       x="157.66627"
+       y="-183.53522"
+       width="1165.0235"
+       height="260.93973"
+       id="rect179499" />
     <rect
        x="-114.67253"
        y="520.34697"
@@ -288,10 +294,9 @@
        id="rect49633" />
   </defs>
   <g
-     inkscape:label="Layer 1"
+     inkscape:label="Base A3"
      inkscape:groupmode="layer"
-     id="layer1"
-     sodipodi:insensitive="true">
+     id="layer1">
     <rect
        style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect1942"
@@ -334,6 +339,28 @@
        height="125"
        x="277.5"
        y="151.5" />
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,-42.355558,-20.594847)"
+       id="text179497"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect179499);fill:#000000;fill-opacity:1;stroke:none"><tspan
+         x="157.66602"
+         y="-148.14453"
+         id="tspan210592">Open the layers pane (Layer -&gt; Layers...) and leave the </tspan><tspan
+         x="157.66602"
+         y="-98.144531"
+         id="tspan210594">&quot;Base A3&quot; and one other layer visible
+</tspan><tspan
+         x="157.66602"
+         y="-48.144531"
+         id="tspan210596">Then go to File -&gt; Save As...  and select PDF
+</tspan><tspan
+         x="157.66602"
+         y="1.8554688"
+         id="tspan210598">Repeat for each different marker layer. You shoul have 6 </tspan><tspan
+         x="157.66602"
+         y="51.855469"
+         id="tspan210600">PDF files in total</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -889,7 +916,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-0);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166379">0</tspan></text>
+         id="tspan210602">0</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,46.642635,127.81573)"
@@ -897,7 +924,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-2-8);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166381">3</tspan></text>
+         id="tspan210604">3</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64262,127.81573)"
@@ -905,7 +932,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-2-0-1);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166383">4</tspan></text>
+         id="tspan210606">4</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.72063,127.81573)"
@@ -913,7 +940,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-2-0-3-6);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166385">5</tspan></text>
+         id="tspan210608">5</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64262,-8.1842675)"
@@ -921,7 +948,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-6-6);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166387">1</tspan></text>
+         id="tspan210610">1</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.64262,-8.1842675)"
@@ -929,7 +956,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-6-9-2);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166389">2</tspan></text>
+         id="tspan210612">2</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
@@ -944,7 +971,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-5);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166391">6</tspan></text>
+         id="tspan210614">6</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,46.642635,127.81573)"
@@ -952,7 +979,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-2-3);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166393">9</tspan></text>
+         id="tspan210616">9</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,127.81573)"
@@ -960,7 +987,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-2-0-7);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166395">10</tspan></text>
+         id="tspan210618">10</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.72063,127.81573)"
@@ -968,7 +995,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-2-0-3-9);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166397">11</tspan></text>
+         id="tspan210620">11</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,-8.1842675)"
@@ -976,7 +1003,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-6-92);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166399">7</tspan></text>
+         id="tspan210622">7</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.64263,-8.1842675)"
@@ -984,7 +1011,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect4550-6-9-28);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166401">8</tspan></text>
+         id="tspan210624">8</tspan></text>
     <g
        style="display:inline;shape-rendering:crispEdges"
        id="g155944"
@@ -1624,7 +1651,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49509);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166403">12</tspan></text>
+         id="tspan210626">12</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,46.642635,127.81573)"
@@ -1632,7 +1659,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49511);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166405">15</tspan></text>
+         id="tspan210628">15</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,127.81573)"
@@ -1640,7 +1667,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49513);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166407">16</tspan></text>
+         id="tspan210630">16</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.72063,127.81573)"
@@ -1648,7 +1675,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49515);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166409">17</tspan></text>
+         id="tspan210632">17</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,-8.1842675)"
@@ -1656,7 +1683,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49517);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166411">13</tspan></text>
+         id="tspan210634">13</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.64263,-8.1842675)"
@@ -1664,7 +1691,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49519);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166413">14</tspan></text>
+         id="tspan210636">14</tspan></text>
     <g
        style="shape-rendering:crispEdges"
        id="g164447"
@@ -2143,7 +2170,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49547);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166415">18</tspan></text>
+         id="tspan210638">18</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,46.642635,127.81573)"
@@ -2151,7 +2178,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49549);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166417">21</tspan></text>
+         id="tspan210640">21</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,127.81573)"
@@ -2159,7 +2186,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49551);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166419">22</tspan></text>
+         id="tspan210642">22</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.72063,127.81573)"
@@ -2167,7 +2194,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49553);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166421">23</tspan></text>
+         id="tspan210644">23</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,-8.1842675)"
@@ -2175,7 +2202,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49555);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166423">19</tspan></text>
+         id="tspan210646">19</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.64263,-8.1842675)"
@@ -2183,7 +2210,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49557);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166425">20</tspan></text>
+         id="tspan210648">20</tspan></text>
     <g
        style="display:inline;shape-rendering:crispEdges"
        id="g164678"
@@ -2767,7 +2794,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49585);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166427">24</tspan></text>
+         id="tspan210650">24</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,46.642635,127.81573)"
@@ -2775,7 +2802,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49587);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166429">27</tspan></text>
+         id="tspan210652">27</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,127.81573)"
@@ -2783,7 +2810,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49589);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166431">28</tspan></text>
+         id="tspan210654">28</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.72063,127.81573)"
@@ -2791,7 +2818,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49591);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166433">29</tspan></text>
+         id="tspan210656">29</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,-8.1842675)"
@@ -2799,7 +2826,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49593);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166435">25</tspan></text>
+         id="tspan210658">25</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.64263,-8.1842675)"
@@ -2807,7 +2834,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49595);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166437">26</tspan></text>
+         id="tspan210660">26</tspan></text>
     <g
        style="shape-rendering:crispEdges"
        id="g165154"
@@ -3349,7 +3376,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49623);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166439">30</tspan></text>
+         id="tspan210662">30</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,46.642635,127.81573)"
@@ -3357,7 +3384,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49625);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166441">33</tspan></text>
+         id="tspan210664">33</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,127.81573)"
@@ -3365,7 +3392,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49627);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166443">34</tspan></text>
+         id="tspan210666">34</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.72063,127.81573)"
@@ -3373,7 +3400,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49629);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166445">35</tspan></text>
+         id="tspan210668">35</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,177.64263,-8.1842675)"
@@ -3381,7 +3408,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49631);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166447">31</tspan></text>
+         id="tspan210670">31</tspan></text>
     <text
        xml:space="preserve"
        transform="matrix(0.26458333,0,0,0.26458333,308.64263,-8.1842675)"
@@ -3389,7 +3416,7 @@
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#rect49633);fill:#000000;fill-opacity:1;stroke:none"><tspan
          x="-114.67188"
          y="555.73828"
-         id="tspan166449">32</tspan></text>
+         id="tspan210672">32</tspan></text>
     <g
        style="display:inline;shape-rendering:crispEdges"
        id="g165388"
