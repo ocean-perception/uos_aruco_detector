@@ -73,7 +73,7 @@ class ArucoLocalisation:
         self.server = UDPBroadcastServer(
             self.config.udp_server_ip, self.config.udp_server_port
         )
-        self.frame_decorator = FrameDecorator()
+        self.frame_decorator = FrameDecorator(self.config.screen_width, self.config.screen_height)
         self.detector = ArucoDetector(
             self.config.camera_matrix, self.config.camera_distortion
         )

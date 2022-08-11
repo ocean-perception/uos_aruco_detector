@@ -9,6 +9,8 @@ defaults:
   broadcast_frequency: 10.0
   frame: ENU
   marker_size: 0.1
+  screen_width: 1920
+  screen_height: 1080
 
 camera:
   matrix:
