@@ -16,7 +16,7 @@ class UDPBroadcastServer:
 
     def broadcast(self, message):
         # -- Broadcast the dictionary as a bytes-like object (string-like info) and empties
-        broadcast_string = json.dumps(message, indent=3).encode("utf-8")
+        broadcast_string = json.dumps(message, indent=3)
 
         self.socket.sendto(
             broadcast_string.encode("utf-8"),
