@@ -233,43 +233,41 @@ class ArucoLocalisation:
         for i, id in enumerate(ids):
             time_list, elapsed_time = self.get_time()
             # Handle platforms and broadcasting
+            broadcast_msg = {}
             if detected(id, marker.PLATFORM_1):
                 pos, rot = self.origin.get_relative_position(
                     rvecs[i, 0, :], tvecs[i, 0, :]
                 )
                 self.tag_loggers[0].log(time_list, elapsed_time, pos, rot, broadcast)
-                if broadcast:
-                    self.tag_loggers[0].broadcast(self.server)
+                broadcast_msg = self.tag_loggers[0].update_broadcast_msg(broadcast_msg)
             elif detected(id, marker.PLATFORM_2):
                 pos, rot = self.origin.get_relative_position(
                     rvecs[i, 0, :], tvecs[i, 0, :]
                 )
                 self.tag_loggers[1].log(time_list, elapsed_time, pos, rot, broadcast)
-                if broadcast:
-                    self.tag_loggers[1].broadcast(self.server)
+                broadcast_msg = self.tag_loggers[1].update_broadcast_msg(broadcast_msg)
             elif detected(id, marker.PLATFORM_3):
                 pos, rot = self.origin.get_relative_position(
                     rvecs[i, 0, :], tvecs[i, 0, :]
                 )
                 self.tag_loggers[2].log(time_list, elapsed_time, pos, rot, broadcast)
-                if broadcast:
-                    self.tag_loggers[2].broadcast(self.server)
+                broadcast_msg = self.tag_loggers[2].update_broadcast_msg(broadcast_msg)
             elif detected(id, marker.PLATFORM_4):
                 pos, rot = self.origin.get_relative_position(
                     rvecs[i, 0, :], tvecs[i, 0, :]
                 )
                 self.tag_loggers[3].log(time_list, elapsed_time, pos, rot, broadcast)
-                if broadcast:
-                    self.tag_loggers[3].broadcast(self.server)
+                broadcast_msg = self.tag_loggers[3].update_broadcast_msg(broadcast_msg)
             elif detected(id, marker.PLATFORM_5):
                 pos, rot = self.origin.get_relative_position(
                     rvecs[i, 0, :], tvecs[i, 0, :]
                 )
                 self.tag_loggers[4].log(time_list, elapsed_time, pos, rot, broadcast)
-                if broadcast:
-                    self.tag_loggers[4].broadcast(self.server)
-            # Make sure to update the origin frame
-            self.origin.frame = self.config.frame
+                broadcast_msg = self.tag_loggers[4].update_broadcast_msg(broadcast_msg)
+        # Make sure to update the origin frame
+        self.origin.frame = self.config.frame
+        if broadcast:
+            self.server.broadcast(broadcast_msg)
         return frame
 
 

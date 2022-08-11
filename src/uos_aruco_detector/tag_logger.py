@@ -27,11 +27,19 @@ class TagLogger:
             )
             file.close()
 
-    def broadcast(self, udp_socket_server: UDPBroadcastServer):
+    def update_broadcast_msg(self, msg_dict: dict):
         # -- Broadcast the tag position and rotation
-        udp_socket_server.broadcast(
-            f"{self.tag_id},{self.current_time},{self.elapsed_time},{self.tag_position},{self.tag_rotation}"
-        )
+        msg_dict[self.tag_id] = [
+            self.current_time,
+            self.elapsed_time,
+            self.tag_position[0],
+            self.tag_position[1],
+            self.tag_position[2],
+            self.tag_rotation[0],
+            self.tag_rotation[1],
+            self.tag_rotation[2],
+        ]
+        return msg_dict
 
     def log(self, current_time, elapsed_time, tag_position, tag_rotation, broadcasted):
         self.current_time = current_time

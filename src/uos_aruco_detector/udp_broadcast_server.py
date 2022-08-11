@@ -10,16 +10,13 @@ class UDPBroadcastServer:
         )
         # -- Enable broadcasting mode
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-
-        self.socket.connect(("8.8.8.8", 80))
-        ip = self.socket.getsockname()[0]
         self.socket.settimeout(None)
         self.ip = ip
         self.port = port
 
     def broadcast(self, message):
         # -- Broadcast the dictionary as a bytes-like object (string-like info) and empties
-        broadcast_string = json.dumps(message, indent=3)
+        broadcast_string = json.dumps(message, indent=3).encode("utf-8")
 
         self.socket.sendto(
             broadcast_string.encode("utf-8"),

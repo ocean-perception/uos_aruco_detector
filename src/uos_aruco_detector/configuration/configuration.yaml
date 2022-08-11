@@ -2,8 +2,8 @@ usb_storage_path: ""
 logging_folder: "logs"
 
 udp_server:
-  ip: 255.255.255.255
-  port: 5555
+  ip: "255.255.255.255"
+  port: 50000
 
 defaults:
   broadcast_frequency: 10.0
