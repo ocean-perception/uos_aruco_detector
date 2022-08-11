@@ -10,9 +10,6 @@ class UDPBroadcastServer:
         )
         # -- Enable broadcasting mode
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-
-        self.socket.connect(("8.8.8.8", 80))
-        ip = self.socket.getsockname()[0]
         self.socket.settimeout(None)
         self.ip = ip
         self.port = port

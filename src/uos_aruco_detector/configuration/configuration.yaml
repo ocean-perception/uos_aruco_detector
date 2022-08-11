@@ -2,13 +2,15 @@ usb_storage_path: ""
 logging_folder: "logs"
 
 udp_server:
-  ip: 255.255.255.255
-  port: 5555
+  ip: "255.255.255.255"
+  port: 50000
 
 defaults:
   broadcast_frequency: 10.0
   frame: ENU
   marker_size: 0.1
+  screen_width: 1920
+  screen_height: 1080
 
 camera:
   matrix:
