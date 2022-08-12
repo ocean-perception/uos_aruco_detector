@@ -7,7 +7,7 @@ def main():
     # Parameters
     params = {
         "port": 50000,
-        "timeout": 0.1,
+        "timeout": 0.5,
     }
 
     # -- UDP
@@ -22,10 +22,12 @@ def main():
     client.bind(("", params["port"]))
 
     while True:
-        broadcast_data, _ = client.recvfrom(1024)
-        result = json.loads(broadcast_data)
-        print("Received: %s" % result)
-        time.sleep(0.1)
+        try:
+            broadcast_data, _ = client.recvfrom(4096)
+            result = json.loads(broadcast_data)
+            print("Received: %s" % result)
+        except TimeoutError as e:
+            print("Waiting for broadcast...")
 
 
 if __name__ == "__main__":

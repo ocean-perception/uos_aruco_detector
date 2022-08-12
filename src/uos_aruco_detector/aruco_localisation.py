@@ -21,13 +21,6 @@ def detected(ids, marker_id):
     return np.any(ids == marker_id)
 
 
-def get_marker_from_list(tag_loggers: List[TagLogger], query_id: int) -> TagLogger:
-    """Get the tag logger with the given id from the list of tag loggers."""
-    for tag_logger in tag_loggers:
-        if tag_logger.tag_id == query_id:
-            return tag_logger
-
-
 class ArucoLocalisation:
     def __init__(self, shutdown_at_end=True):
         """Initialise the ArUco localisation system."""
@@ -95,12 +88,12 @@ class ArucoLocalisation:
         )
         self.origin = OriginReference(log_dir)
 
-        self.tag_loggers = []
+        self.tag_loggers = {}
         self.stop_requested = False
 
         for n in self.config.tags_to_log:
             tl = TagLogger(n, f"Tag_{n}", Colors.RED, log_dir)
-            self.tag_loggers.append(tl)
+            self.tag_loggers[i] = tl
         while not self.stop_requested:
             self.loop()
 
@@ -252,7 +245,10 @@ class ArucoLocalisation:
             time_list, elapsed_time = self.get_time()
             # Handle platforms and broadcasting
             pos, rot = self.origin.get_relative_position(rvecs[i, 0, :], tvecs[i, 0, :])
-            tl = get_marker_from_list(self.tag_loggers, id)
+            tl = self.tag_logger.get(id, None)
+            if tl is None:
+                print("No tag was found with ID", id)
+                continue
             tl.log(time_list, elapsed_time, pos, rot, broadcast)
             broadcast_msg = tl.update_broadcast_msg(broadcast_msg)
         # Make sure to update the origin frame
