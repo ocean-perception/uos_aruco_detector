@@ -2,6 +2,8 @@ import os
 import os.path
 
 from setuptools import find_packages, setup
+from setuptools.command.develop import develop
+from setuptools.command.install import install
 
 classifiers = [
     "Development Status :: 2 - Pre-Alpha",
@@ -17,6 +19,38 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development",
 ]
+
+
+def try_download_configuration_file():
+    """Download configuration file if it does not exist."""
+    configuration_file = (
+        "/home/miquel/uos_aruco_detector/configuration/configuration.yaml"
+    )
+    if os.path.exists(configuration_file):
+        print("Downloading configuration file.")
+        os.system(
+            "wget https://raw.githubusercontent.com/miquelmassot/uos_aruco_detector/main/src/uos_aruco_detector/configuration/configuration.yaml -O {}".format(
+                configuration_file
+            )
+        )
+    else:
+        print("Configuration file does not exist. Will not download it.")
+
+
+class PostDevelopCommand(develop):
+    """Post-installation for development mode."""
+
+    def run(self):
+        develop.run(self)
+        try_download_configuration_file()
+
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+
+    def run(self):
+        install.run(self)
+        try_download_configuration_file()
 
 
 def run_setup():
