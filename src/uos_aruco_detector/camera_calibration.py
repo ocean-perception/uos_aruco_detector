@@ -1,11 +1,15 @@
-import numpy as np
-import cv2
+import argparse
 import glob
 import sys
-import argparse
+from datetime import datetime
+from pathlib import Path
+
+import cv2
+import numpy as np
 
 
 def yaml(size, intrinsics, distortion, num_images, avg_reprojection_error):
+    now = datetime.now()
     calmessage = (
         "%YAML:1.0\n"
         + "image_width: "
@@ -32,7 +36,7 @@ def yaml(size, intrinsics, distortion, num_images, avg_reprojection_error):
         + ", ".join(["%8f" % distortion[i, 0] for i in range(distortion.shape[0])])
         + "]\n"
         + 'date: "'
-        + Console.get_date()
+        + now.strftime("%d/%m/%Y %H:%M:%S")
         + '" \n'
         + "number_of_images: "
         + str(num_images)
@@ -69,8 +73,8 @@ def main():
         "-o",
         "--output",
         type=str,
-        default="camera_calibration.yaml",
-        help="path to output file",
+        default=".",
+        help="Output directory for calibration results",
     )
     args = parser.parse_args()
 
@@ -103,16 +107,22 @@ def main():
         print("Please specify extension")
         sys.exit(1)
 
+    output_directory = Path(args.output)
+
     n_rows = args.nx
     n_cols = args.ny
     dimension = args.size
-    image_folder = args.input
+    image_folder = Path(args.input)
     image_extension = args.extension
-    images = glob.glob(str(image_folder / "*." + image_extension))
+    images = list(image_folder.glob("*." + image_extension))
 
-    print(len(images))
+    print(
+        "Looking for images in {}".format(image_folder),
+        "with extension {}".format(image_extension),
+    )
+    print("Found", len(images), "images")
     if len(images) < 9:
-        print("Not enough images were found: at least 9 shall be provided!!!")
+        print("Not enough images were found: at least 9 shall be provided")
         sys.exit()
 
     # termination criteria
@@ -126,8 +136,8 @@ def main():
     objpoints = []  # 3d point in real world space
     imgpoints = []  # 2d points in image plane.
 
-    nPatternFound = 0
-    imgNotGood = images[1]
+    num_patterns_found = 0
+    good_images = []
 
     for fname in images:
         if "calibresult" in fname:
@@ -139,78 +149,74 @@ def main():
         print("Reading image ", fname)
 
         # Find the chess board corners
-        ret, corners = cv2.findChessboardCorners(gray, (n_cols, n_rows), None)
+        chessboard_found, corners = cv2.findChessboardCorners(
+            gray, (n_cols, n_rows), None
+        )
+
+        if not chessboard_found:
+            continue
 
         # If found, add object points, image points (after refining them)
-        if ret == True:
-            print("Pattern found! Press ESC to skip or ENTER to accept")
-            # --- Sometimes, Harris cornes fails with crappy pictures, so
-            corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
+        print("Pattern found! Press ESC to skip or ENTER to accept")
+        # --- Sometimes, Harris cornes fails with crappy pictures, so
+        corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
 
-            # Draw and display the corners
-            cv2.drawChessboardCorners(img, (n_cols, n_rows), corners2, ret)
-            cv2.imshow("img", img)
-            k = cv2.waitKey(0) & 0xFF
-            if k == 27:  # -- ESC Button
-                print("Image Skipped")
-                imgNotGood = fname
+        # Draw and display the corners
+        cv2.drawChessboardCorners(img, (n_cols, n_rows), corners2, chessboard_found)
+        cv2.imshow("img", img)
+        k = cv2.waitKey(0) & 0xFF
+        if k == 27:  # -- ESC Button
+            print("Image Skipped")
 
-            print("Image accepted")
-            nPatternFound += 1
-            objpoints.append(objp)
-            imgpoints.append(corners2)
-        else:
-            imgNotGood = fname
-
+        print("Image accepted")
+        num_patterns_found += 1
+        objpoints.append(objp)
+        imgpoints.append(corners2)
+        good_images.append(fname)
     cv2.destroyAllWindows()
 
-    if nPatternFound > 1:
-        print("Found %d good images" % (nPatternFound))
-        ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(
-            objpoints, imgpoints, gray.shape[::-1], None, None
-        )
+    num_images = len(good_images)
 
-        # Undistort an image
-        img = cv2.imread(imgNotGood)
-        h, w = img.shape[:2]
-        print("Image to undistort: ", imgNotGood)
-        newcameramtx, roi = cv2.getOptimalNewCameraMatrix(mtx, dist, (w, h), 1, (w, h))
+    print("Found %d good images" % (num_images))
 
-        # undistort
-        mapx, mapy = cv2.initUndistortRectifyMap(
-            mtx, dist, None, newcameramtx, (w, h), 5
-        )
-        dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
+    if num_images < 3:
+        print("Not enough good images were found, we need at least 3")
+        sys.exit()
 
-        # crop the image
-        x, y, w, h = roi
-        dst = dst[y : y + h, x : x + w]
-        print("ROI: ", x, y, w, h)
+    avg_reprojection_error, mtx, distortion, rvecs, tvecs = cv2.calibrateCamera(
+        objpoints, imgpoints, gray.shape[::-1], None, None
+    )
 
-        cv2.imwrite(image_folder + "/calibresult.png", dst)
-        print("Calibrated picture saved as calibresult.jpg")
-        print("Calibration Matrix: ")
-        print(mtx)
-        print("Disortion: ", dist)
+    # Undistort an image
+    img = cv2.imread(good_images[0])
+    h, w = img.shape[:2]
+    newcameramtx, roi = cv2.getOptimalNewCameraMatrix(
+        mtx, distortion, (w, h), 1, (w, h)
+    )
 
-        # --------- Save result
-        filename = image_folder + "/cameraMatrix.txt"
-        np.savetxt(filename, mtx, delimiter=",")
-        filename = image_folder + "/cameraDistortion.txt"
-        np.savetxt(filename, dist, delimiter=",")
+    # undistort
+    mapx, mapy = cv2.initUndistortRectifyMap(
+        mtx, distortion, None, newcameramtx, (w, h), 5
+    )
+    dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
 
-        mean_error = 0
-        for i in range(len(objpoints)):
-            imgpoints2, _ = cv2.projectPoints(
-                objpoints[i], rvecs[i], tvecs[i], mtx, dist
-            )
-            error = cv2.norm(imgpoints[i], imgpoints2, cv2.NORM_L2) / len(imgpoints2)
-            mean_error += error
+    size = (w, h)
+    intrinsics = newcameramtx
 
-        print("total error: ", mean_error / len(objpoints))
+    # crop the image
+    x, y, w, h = roi
+    dst = dst[y : y + h, x : x + w]
+    print("ROI: ", x, y, w, h)
+    output_file = str(output_directory / "calib_result.png")
+    cv2.imwrite(output_file, dst)
+    print("Calibrated picture saved as", output_file)
+    print("Calibration Matrix: \n", intrinsics)
+    print("Disortion: \n", distortion)
 
-    else:
-        print("In order to calibrate you need at least 9 good pictures... try again")
+    output_file = output_directory / "camera_calibration.yaml"
+    with output_file.open("w") as f:
+        f.write(yaml(size, intrinsics, distortion, num_images, avg_reprojection_error))
+    print("Calibration data saved as", output_file)
 
 
 if __name__ == "__main__":

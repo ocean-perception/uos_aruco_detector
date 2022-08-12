@@ -52,6 +52,7 @@ def run_setup():
             "console_scripts": [
                 "uos_aruco_detector = uos_aruco_detector.aruco_localisation:main",
                 "uos_aruco_detector_client = uos_aruco_detector.client_example:main",
+                "uos_aruco_camera_calibration = uos_aruco_detector.camera_calibration:main",
             ],
         },
         include_package_data=True,
