@@ -73,6 +73,10 @@ def run_setup():
             "opencv-python",
             "opencv-contrib-python",
         ],
+        cmdclass={
+            "develop": PostDevelopCommand,
+            "install": PostInstallCommand,
+        },
         author="Ocean Perception - University of Southampton",
         author_email="miquel.massot-campos@soton.ac.uk",
         description="Aruco marker external localisation system using OpenCV capture",  # noqa
