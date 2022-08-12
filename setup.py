@@ -51,6 +51,7 @@ def run_setup():
         entry_points={  # Optional
             "console_scripts": [
                 "uos_aruco_detector = uos_aruco_detector.aruco_localisation:main",
+                "uos_aruco_detector_client = uos_aruco_detector.client_example:main",
             ],
         },
         include_package_data=True,
