@@ -17,7 +17,12 @@ class ArucoDetector:
 
     def loop(self):
         # -- Read the frame
-        _, frame = self.cap.read()
+        ret, frame = self.cap.read()
+        # Check if frame is not empty
+        if not ret:
+            print("Could not grab a frame")
+            return None, None, None, None, None
+
         # -- Convert to gray scale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # -- Find the aruco markers

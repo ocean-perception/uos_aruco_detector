@@ -4,6 +4,7 @@ import shutil
 import time
 from datetime import datetime
 from pathlib import Path
+from typing import List
 
 import numpy as np
 
@@ -18,6 +19,13 @@ from .udp_broadcast_server import UDPBroadcastServer
 def detected(ids, marker_id):
     """Check if a marker with the given id is detected."""
     return np.any(ids == marker_id)
+
+
+def get_marker_from_list(tag_loggers: List[TagLogger], query_id: int) -> TagLogger:
+    """Get the tag logger with the given id from the list of tag loggers."""
+    for tag_logger in tag_loggers:
+        if tag_logger.tag_id == query_id:
+            return tag_logger
 
 
 class ArucoLocalisation:
@@ -68,12 +76,20 @@ class ArucoLocalisation:
                 if not log_dir.exists():
                     log_dir.mkdir(parents=True)
 
+        now = datetime.now()
+        date_time_str = now.strftime("%Y%m%d_%H%M%S")
+        log_dir = log_dir / date_time_str
+        if not log_dir.exists():
+            log_dir.mkdir(parents=True)
+
         print("Logging to {}".format(log_dir))
 
         self.server = UDPBroadcastServer(
             self.config.udp_server_ip, self.config.udp_server_port
         )
-        self.frame_decorator = FrameDecorator(self.config.screen_width, self.config.screen_height)
+        self.frame_decorator = FrameDecorator(
+            self.config.screen_width, self.config.screen_height
+        )
         self.detector = ArucoDetector(
             self.config.camera_matrix, self.config.camera_distortion
         )
@@ -82,8 +98,7 @@ class ArucoLocalisation:
         self.tag_loggers = []
         self.stop_requested = False
 
-        id_list = list(range(1, 6))
-        for n in id_list:
+        for n in self.config.tags_to_log:
             tl = TagLogger(n, f"Tag_{n}", Colors.RED, log_dir)
             self.tag_loggers.append(tl)
         while not self.stop_requested:
@@ -96,6 +111,8 @@ class ArucoLocalisation:
     def loop(self):
         """Main loop."""
         frame, corners, ids, rvecs, tvecs = self.detector.loop()
+        if frame is None:
+            return
         # Wait until the system is calibrated
         if not self.calibrated:
             frame = self.calibration_loop(frame, ids, rvecs, tvecs)
@@ -230,40 +247,14 @@ class ArucoLocalisation:
             self.frame_decorator.stop()
             return None
 
+        broadcast_msg = {}
         for i, id in enumerate(ids):
             time_list, elapsed_time = self.get_time()
             # Handle platforms and broadcasting
-            broadcast_msg = {}
-            if detected(id, marker.PLATFORM_1):
-                pos, rot = self.origin.get_relative_position(
-                    rvecs[i, 0, :], tvecs[i, 0, :]
-                )
-                self.tag_loggers[0].log(time_list, elapsed_time, pos, rot, broadcast)
-                broadcast_msg = self.tag_loggers[0].update_broadcast_msg(broadcast_msg)
-            elif detected(id, marker.PLATFORM_2):
-                pos, rot = self.origin.get_relative_position(
-                    rvecs[i, 0, :], tvecs[i, 0, :]
-                )
-                self.tag_loggers[1].log(time_list, elapsed_time, pos, rot, broadcast)
-                broadcast_msg = self.tag_loggers[1].update_broadcast_msg(broadcast_msg)
-            elif detected(id, marker.PLATFORM_3):
-                pos, rot = self.origin.get_relative_position(
-                    rvecs[i, 0, :], tvecs[i, 0, :]
-                )
-                self.tag_loggers[2].log(time_list, elapsed_time, pos, rot, broadcast)
-                broadcast_msg = self.tag_loggers[2].update_broadcast_msg(broadcast_msg)
-            elif detected(id, marker.PLATFORM_4):
-                pos, rot = self.origin.get_relative_position(
-                    rvecs[i, 0, :], tvecs[i, 0, :]
-                )
-                self.tag_loggers[3].log(time_list, elapsed_time, pos, rot, broadcast)
-                broadcast_msg = self.tag_loggers[3].update_broadcast_msg(broadcast_msg)
-            elif detected(id, marker.PLATFORM_5):
-                pos, rot = self.origin.get_relative_position(
-                    rvecs[i, 0, :], tvecs[i, 0, :]
-                )
-                self.tag_loggers[4].log(time_list, elapsed_time, pos, rot, broadcast)
-                broadcast_msg = self.tag_loggers[4].update_broadcast_msg(broadcast_msg)
+            pos, rot = self.origin.get_relative_position(rvecs[i, 0, :], tvecs[i, 0, :])
+            tl = get_marker_from_list(self.tag_loggers, id)
+            tl.log(time_list, elapsed_time, pos, rot, broadcast)
+            broadcast_msg = tl.update_broadcast_msg(broadcast_msg)
         # Make sure to update the origin frame
         self.origin.frame = self.config.frame
         if broadcast:

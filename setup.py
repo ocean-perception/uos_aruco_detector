@@ -30,7 +30,7 @@ def run_setup():
         long_description = ""
     setup(
         name="uos_aruco_detector",
-        version="1.0.4",
+        version="1.0.5",
         install_requires=[
             "PyYAML",
             "pandas",
