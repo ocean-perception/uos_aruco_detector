@@ -76,6 +76,7 @@ def main():
         default=".",
         help="Output directory for calibration results",
     )
+    parser.add_argument("--debug", action="store_true", help="Show debug images")
     args = parser.parse_args()
 
     # If no arguments are provided, print help
@@ -109,6 +110,7 @@ def main():
 
     output_directory = Path(args.output)
 
+    debug = args.debug
     n_rows = args.nx
     n_cols = args.ny
     dimension = args.size
@@ -126,7 +128,7 @@ def main():
         sys.exit()
 
     # termination criteria
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, dimension, 0.001)
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 500, 0.001)
 
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
     objp = np.zeros((n_rows * n_cols, 3), np.float32)
@@ -140,10 +142,8 @@ def main():
     good_images = []
 
     for fname in images:
-        if "calibresult" in fname:
-            continue
         # -- Read the file and convert in greyscale
-        img = cv2.imread(fname)
+        img = cv2.imread(str(fname))
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
         print("Reading image ", fname)
@@ -161,14 +161,15 @@ def main():
         # --- Sometimes, Harris cornes fails with crappy pictures, so
         corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
 
-        # Draw and display the corners
-        cv2.drawChessboardCorners(img, (n_cols, n_rows), corners2, chessboard_found)
-        cv2.imshow("img", img)
-        k = cv2.waitKey(0) & 0xFF
-        if k == 27:  # -- ESC Button
-            print("Image Skipped")
-
-        print("Image accepted")
+        if debug:
+            # Draw and display the corners
+            cv2.drawChessboardCorners(img, (n_cols, n_rows), corners2, chessboard_found)
+            cv2.namedWindow("uos-aruco-camera-cal", cv2.WINDOW_NORMAL)
+            cv2.imshow("uos-aruco-camera-cal", img)
+            k = cv2.waitKey(0) & 0xFF
+            if k == 27:  # -- ESC Button
+                print("Image Skipped")
+            print("Image accepted")
         num_patterns_found += 1
         objpoints.append(objp)
         imgpoints.append(corners2)
@@ -188,7 +189,7 @@ def main():
     )
 
     # Undistort an image
-    img = cv2.imread(good_images[0])
+    img = cv2.imread(str(good_images[0]))
     h, w = img.shape[:2]
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(
         mtx, distortion, (w, h), 1, (w, h)
