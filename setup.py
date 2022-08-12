@@ -23,18 +23,16 @@ classifiers = [
 
 def try_download_configuration_file():
     """Download configuration file if it does not exist."""
+    home_dir = os.getenv("HOME")
     configuration_file = (
-        "/home/miquel/uos_aruco_detector/configuration/configuration.yaml"
+        home_dir + "/uos_aruco_detector/configuration/configuration.yaml"
     )
     if os.path.exists(configuration_file):
-        print("Downloading configuration file.")
         os.system(
             "wget https://raw.githubusercontent.com/miquelmassot/uos_aruco_detector/main/src/uos_aruco_detector/configuration/configuration.yaml -O {}".format(
                 configuration_file
             )
         )
-    else:
-        print("Configuration file does not exist. Will not download it.")
 
 
 class PostDevelopCommand(develop):
@@ -64,7 +62,7 @@ def run_setup():
         long_description = ""
     setup(
         name="uos_aruco_detector",
-        version="1.0.6",
+        version="1.0.7",
         install_requires=[
             "PyYAML",
             "pandas",

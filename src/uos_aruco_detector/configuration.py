@@ -54,12 +54,6 @@ class Configuration:
         self.marker.FRAME_ENU = int(config["markers"]["FRAME_ENU"])
         self.marker.SHUTDOWN = int(config["markers"]["SHUTDOWN"])
 
-        self.marker.PLATFORM_1 = int(config["markers"]["PLATFORM_1"])
-        self.marker.PLATFORM_2 = int(config["markers"]["PLATFORM_2"])
-        self.marker.PLATFORM_3 = int(config["markers"]["PLATFORM_3"])
-        self.marker.PLATFORM_4 = int(config["markers"]["PLATFORM_4"])
-        self.marker.PLATFORM_5 = int(config["markers"]["PLATFORM_5"])
-
         self.udp_server_port = int(config["udp_server"]["port"])
         self.udp_server_ip = config["udp_server"]["ip"]
 
