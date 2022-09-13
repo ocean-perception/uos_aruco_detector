@@ -93,7 +93,7 @@ class ArucoLocalisation:
 
         for n in self.config.tags_to_log:
             tl = TagLogger(n, f"Tag_{n}", Colors.RED, log_dir)
-            self.tag_loggers[n] = tl
+            self.tag_loggers[str(n)] = tl
         while not self.stop_requested:
             self.loop()
 
@@ -245,7 +245,7 @@ class ArucoLocalisation:
             time_list, elapsed_time = self.get_time()
             # Handle platforms and broadcasting
             pos, rot = self.origin.get_relative_position(rvecs[i, 0, :], tvecs[i, 0, :])
-            tl = self.tag_loggers.get(id, None)
+            tl = self.tag_loggers.get(str(id), None)
             if tl is None:
                 print("No tag was found with ID", id)
                 continue
