@@ -93,7 +93,7 @@ class ArucoLocalisation:
 
         for n in self.config.tags_to_log:
             tl = TagLogger(n, f"Tag_{n}", Colors.RED, log_dir)
-            self.tag_loggers[i] = tl
+            self.tag_loggers[n] = tl
         while not self.stop_requested:
             self.loop()
 
