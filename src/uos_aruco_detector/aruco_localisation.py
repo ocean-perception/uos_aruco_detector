@@ -245,7 +245,7 @@ class ArucoLocalisation:
             time_list, elapsed_time = self.get_time()
             # Handle platforms and broadcasting
             pos, rot = self.origin.get_relative_position(rvecs[i, 0, :], tvecs[i, 0, :])
-            tl = self.tag_logger.get(id, None)
+            tl = self.tag_loggers.get(id, None)
             if tl is None:
                 print("No tag was found with ID", id)
                 continue
