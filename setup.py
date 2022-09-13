@@ -29,7 +29,7 @@ def try_download_configuration_file():
     )
     if os.path.exists(configuration_file):
         os.system(
-            "wget https://raw.githubusercontent.com/miquelmassot/uos_aruco_detector/main/src/uos_aruco_detector/configuration/configuration.yaml -O {}".format(
+            "wget https://raw.githubusercontent.com/ocean-perception/uos_aruco_detector/main/src/uos_aruco_detector/configuration/configuration.yaml -O {}".format(
                 configuration_file
             )
         )
@@ -62,7 +62,7 @@ def run_setup():
         long_description = ""
     setup(
         name="uos_aruco_detector",
-        version="1.0.12",
+        version="1.0.13",
         install_requires=[
             "PyYAML",
             "pandas",
