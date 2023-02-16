@@ -33,7 +33,7 @@ def yaml(size, intrinsics, distortion, num_images, avg_reprojection_error):
         + "  cols: 5\n"
         + "  dt: d\n"
         + "  data: ["
-        + ", ".join(["%8f" % distortion[i, 0] for i in range(distortion.shape[0])])
+        + ", ".join(["%8f" % distortion[i] for i in range(distortion.shape[0])])
         + "]\n"
         + 'date: "'
         + now.strftime("%d/%m/%Y %H:%M:%S")
@@ -109,6 +109,8 @@ def main():
         sys.exit(1)
 
     output_directory = Path(args.output)
+    if not output_directory.exists():
+        output_directory.mkdir(parents=True)
 
     debug = args.debug
     n_rows = args.nx
@@ -117,6 +119,9 @@ def main():
     image_folder = Path(args.input)
     image_extension = args.extension
     images = list(image_folder.glob("*." + image_extension))
+    
+    # Define the dimensions of checkerboard
+    CHECKERBOARD = (n_rows, n_cols)
 
     print(
         "Looking for images in {}".format(image_folder),
@@ -128,11 +133,15 @@ def main():
         sys.exit()
 
     # termination criteria
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 500, 0.001)
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 1000, 0.0001)
 
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
-    objp = np.zeros((n_rows * n_cols, 3), np.float32)
-    objp[:, :2] = np.mgrid[0:n_cols, 0:n_rows].T.reshape(-1, 2)
+    #  3D points real world coordinates
+    objectp3d = np.zeros((1, CHECKERBOARD[0] 
+                          * CHECKERBOARD[1], 
+                          3), np.float32)
+    objectp3d[0, :, :2] = np.mgrid[0:CHECKERBOARD[0],
+                                   0:CHECKERBOARD[1]].T.reshape(-1, 2)
 
     # Arrays to store object points and image points from all the images.
     objpoints = []  # 3d point in real world space
@@ -150,18 +159,21 @@ def main():
 
         # Find the chess board corners
         chessboard_found, corners = cv2.findChessboardCorners(
-            gray, (n_cols, n_rows), None
+            gray, CHECKERBOARD, cv2.CALIB_CB_ADAPTIVE_THRESH 
+                    + cv2.CALIB_CB_FAST_CHECK + 
+                    cv2.CALIB_CB_NORMALIZE_IMAGE
         )
 
         if not chessboard_found:
             continue
 
         # If found, add object points, image points (after refining them)
-        print("Pattern found! Press ESC to skip or ENTER to accept")
+        print("Pattern found!")
         # --- Sometimes, Harris cornes fails with crappy pictures, so
         corners2 = cv2.cornerSubPix(gray, corners, (11, 11), (-1, -1), criteria)
 
         if debug:
+            print("Press ESC to skip or ENTER to accept")
             # Draw and display the corners
             cv2.drawChessboardCorners(img, (n_cols, n_rows), corners2, chessboard_found)
             cv2.namedWindow("uos-aruco-camera-cal", cv2.WINDOW_NORMAL)
@@ -171,7 +183,7 @@ def main():
                 print("Image Skipped")
             print("Image accepted")
         num_patterns_found += 1
-        objpoints.append(objp)
+        objpoints.append(objectp3d)
         imgpoints.append(corners2)
         good_images.append(fname)
     cv2.destroyAllWindows()
@@ -187,10 +199,18 @@ def main():
     avg_reprojection_error, mtx, distortion, rvecs, tvecs = cv2.calibrateCamera(
         objpoints, imgpoints, gray.shape[::-1], None, None
     )
+    
+    # Displaying required output
+    print(" Camera matrix:")
+    print(mtx)
+      
+    print("\n Distortion coefficient:")
+    print(distortion)
 
     # Undistort an image
     img = cv2.imread(str(good_images[0]))
     h, w = img.shape[:2]
+    print(h, w)
     newcameramtx, roi = cv2.getOptimalNewCameraMatrix(
         mtx, distortion, (w, h), 1, (w, h)
     )
@@ -200,6 +220,8 @@ def main():
         mtx, distortion, None, newcameramtx, (w, h), 5
     )
     dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
+    output_file = str(output_directory / "calib_result_raw.png")
+    cv2.imwrite(output_file, dst)
 
     size = (w, h)
     intrinsics = newcameramtx
