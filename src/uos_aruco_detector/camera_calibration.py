@@ -33,7 +33,7 @@ def yaml(size, intrinsics, distortion, num_images, avg_reprojection_error):
         + "  cols: 5\n"
         + "  dt: d\n"
         + "  data: ["
-        + ", ".join(["%8f" % distortion[i, 0] for i in range(distortion.shape[0])])
+        + ", ".join(["%8f" % i for i in distortion.reshape(1, distortion.size)[0]])
         + "]\n"
         + 'date: "'
         + now.strftime("%d/%m/%Y %H:%M:%S")
@@ -133,6 +133,7 @@ def main():
     # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
     objp = np.zeros((n_rows * n_cols, 3), np.float32)
     objp[:, :2] = np.mgrid[0:n_cols, 0:n_rows].T.reshape(-1, 2)
+    objp *= dimension
 
     # Arrays to store object points and image points from all the images.
     objpoints = []  # 3d point in real world space
@@ -163,8 +164,8 @@ def main():
 
         if debug:
             # Draw and display the corners
-            cv2.drawChessboardCorners(img, (n_cols, n_rows), corners2, chessboard_found)
             cv2.namedWindow("uos-aruco-camera-cal", cv2.WINDOW_NORMAL)
+            cv2.drawChessboardCorners(img, (n_cols, n_rows), corners2, chessboard_found)
             cv2.imshow("uos-aruco-camera-cal", img)
             k = cv2.waitKey(0) & 0xFF
             if k == 27:  # -- ESC Button
@@ -202,7 +203,6 @@ def main():
     dst = cv2.remap(img, mapx, mapy, cv2.INTER_LINEAR)
 
     size = (w, h)
-    intrinsics = newcameramtx
 
     # crop the image
     x, y, w, h = roi
@@ -211,12 +211,12 @@ def main():
     output_file = str(output_directory / "calib_result.png")
     cv2.imwrite(output_file, dst)
     print("Calibrated picture saved as", output_file)
-    print("Calibration Matrix: \n", intrinsics)
+    print("Calibration Matrix: \n", mtx)
     print("Disortion: \n", distortion)
 
     output_file = output_directory / "camera_calibration.yaml"
     with output_file.open("w") as f:
-        f.write(yaml(size, intrinsics, distortion, num_images, avg_reprojection_error))
+        f.write(yaml(size, mtx, distortion, num_images, avg_reprojection_error))
     print("Calibration data saved as", output_file)
 
 
