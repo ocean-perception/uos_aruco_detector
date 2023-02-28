@@ -4,10 +4,11 @@ import numpy as np
 
 
 class ArucoDetector:
-    def __init__(self, camera_matrix, camera_distortion):
+    def __init__(self, camera_matrix, camera_distortion, marker_size):
         # --- Get the camera calibration path and parameters
         self.camera_matrix = np.array(camera_matrix)
         self.camera_distortion = np.array(camera_distortion)
+        self.marker_size = marker_size
         # --- Define the aruco dictionary
         self.aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_100)
         self.parameters = aruco.DetectorParameters_create()
@@ -37,7 +38,7 @@ class ArucoDetector:
             # corners = aruco.refineDetectedMarkers(gray, corners, rejectedImgPoints)
             # -- Estimate the pose of the aruco markers
             rvecs, tvecs, _ = aruco.estimatePoseSingleMarkers(
-                corners, 0.05, self.camera_matrix, self.camera_distortion
+                corners, self.marker_size, self.camera_matrix, self.camera_distortion
             )
         return frame, corners, ids, rvecs, tvecs
 

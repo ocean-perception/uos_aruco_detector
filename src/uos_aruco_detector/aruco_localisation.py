@@ -84,7 +84,7 @@ class ArucoLocalisation:
             self.config.screen_width, self.config.screen_height
         )
         self.detector = ArucoDetector(
-            self.config.camera_matrix, self.config.camera_distortion
+            self.config.camera_matrix, self.config.camera_distortion, self.config.marker_size
         )
         self.origin = OriginReference(log_dir)
 
