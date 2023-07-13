@@ -7,7 +7,7 @@ udp_server:
 
 defaults:
   broadcast_frequency: 10.0
-  frame: ENU
+  frame: NED
   marker_size: 0.1
   screen_width: 1920
   screen_height: 1080
@@ -18,8 +18,7 @@ camera:
     - [703.312156, 0.000000, 644.935069]
     - [0.000000, 703.971575, 349.353883]
     - [0.000000, 0.000000, 1.000000]
-  distortion:
-    [-0.336879, 0.117174, -0.000489, 0.000184, -0.018663]
+  distortion: [-0.336879, 0.117174, -0.000489, 0.000184, -0.018663]
 
 markers:
   OK: 12
@@ -33,4 +32,3 @@ markers:
   BROADCAST_FREQ_5_HZ: 20
   BROADCAST_FREQ_10_HZ: 26
   BROADCAST_ALWAYS: 16
-

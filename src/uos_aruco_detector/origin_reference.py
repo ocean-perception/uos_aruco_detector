@@ -2,8 +2,41 @@ import csv
 
 import cv2
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 from .rotations import rotationMatrixToEulerAngles
+
+
+def inverse_prespective(rvec, tvec):
+    R, _ = cv2.Rodrigues(rvec)
+    R = np.matrix(R).T
+    invTvec = np.dot(-R, np.matrix(tvec))
+    invRvec, _ = cv2.Rodrigues(R)
+    return invRvec, invTvec
+
+
+def relative_position(rvec1, tvec1, rvec2, tvec2):
+    """Calculates the relative position of the second marker wrt the first one.
+
+    Args:
+        rvec1 (np.ndarray): Rotation vector of the first marker.
+        tvec1 (np.ndarray): Translation vector of the first marker.
+        rvec2 (np.ndarray): Rotation vector of the second marker.
+        tvec2 (np.ndarray): Translation vector of the second marker.
+
+    Returns:
+        np.ndarray: Rotation vector of the second marker wrt the first one.
+        np.ndarray: Translation vector of the second marker wrt the first one.
+    """
+    rvec1, tvec1 = rvec1.reshape((3, 1)), tvec1.reshape((3, 1))
+    rvec2, tvec2 = rvec2.reshape((3, 1)), tvec2.reshape((3, 1))
+    # Inverse the second marker, the right one in the image
+    invRvec, invTvec = inverse_prespective(rvec2, tvec2)
+    info = cv2.composeRT(rvec1, tvec1, invRvec, invTvec)
+    composed_rvec, composed_tvec = info[0], info[1]
+    composed_rvec = composed_rvec.reshape((3, 1))
+    composed_tvec = composed_tvec.reshape((3, 1))
+    return composed_rvec, composed_tvec
 
 
 class OriginReference:
@@ -20,59 +53,44 @@ class OriginReference:
         with open(
             self.path / "origin.csv", "w", encoding="utf-8", newline=""
         ) as stored_origin:
-            # -- Flip the y and z axis to ensure standard orientation of axis
-            tvec_flipped = tvec * np.array([1, -1, -1])
-            writer = csv.writer(stored_origin)
-            writer.writerow(rvec)
-            writer.writerow(tvec_flipped)
-            writer.writerow(tvec)
-
-            # -- Obtain the rotation matrix tag->camera
-            R_ct_ini = np.matrix(cv2.Rodrigues(rvec)[0])
-            R_tc_ini = R_ct_ini.T
-
-            # -- Get the attitude in terms of euler 321 (Needs to be flipped first)
-            R_flip = np.zeros((3, 3), dtype=np.float32)
-            R_flip[0, 0] = 1.0
-            R_flip[1, 1] = -1.0
-            R_flip[2, 2] = -1.0
-            (
-                roll,
-                pitch,
-                yaw,
-            ) = rotationMatrixToEulerAngles(R_flip * R_tc_ini)
-            self.angles = np.array([roll, pitch, yaw])
             self.tvec = tvec
             self.rvec = rvec
             self.initialised = True
 
-    def get_relative_position(self, rvec, tvec_flipped):
-        # -- Unpack the output, get only the first
-        tvec = tvec_flipped * np.array([1, -1, -1])
+    def get_relative_position(self, rvec, tvec):
+        if not self.initialised:
+            return None, None
 
-        # -- Obtain the rotation matrix tag->camera
-        R_ct = np.matrix(cv2.Rodrigues(rvec)[0])
-        R_tc = R_ct.T
-
-        # --- 180 deg rotation matrix around the x axis
-        R_flip = np.zeros((3, 3), dtype=np.float32)
-        R_flip[0, 0] = 1.0
-        R_flip[1, 1] = -1.0
-        R_flip[2, 2] = -1.0
-
-        # -- Get the attitude in terms of euler 321 (Needs to be flipped first)
-        roll_marker, pitch_marker, yaw_marker = rotationMatrixToEulerAngles(
-            R_flip * R_tc
+        # -- Get the relative position of the second marker wrt the first one
+        composed_rvec, composed_tvec = relative_position(
+            rvec,
+            tvec,
+            self.rvec,
+            self.tvec,
         )
-        angles = np.array([roll_marker, pitch_marker, yaw_marker])
 
-        # -- Calculates position and attitude wrt to origin
-        if self.frame == "ENU":
-            tag_position = tvec - self.tvec
-            tag_rotation = angles - self.angles
-        else:
-            tag_position = tvec_flipped - self.tvec * np.array([1, -1, -1])
-            tag_rotation = angles - self.angles
+        rot = cv2.Rodrigues(composed_rvec)[0]
+        tag_position = composed_tvec
+
+        if self.frame == "NED":
+            # Rotation matrix for ENU to NED
+            R = np.array(
+                [
+                    [0, 1, 0],
+                    [1, 0, 0],
+                    [0, 0, -1],
+                ]
+            )
+            # Transform the position and rotation to NED
+            tag_position = R @ composed_tvec
+            rot = R @ rot
+
+        r = Rotation.from_matrix(rot)
+        angles = r.as_euler("XYZ", degrees=True)
+        tag_rotation = np.array([angles[0], angles[1], angles[2]])
+        tag_position = tag_position.reshape((3,))
+
+        print(self.frame, tag_position, tag_rotation)
 
         return tag_position, tag_rotation
 

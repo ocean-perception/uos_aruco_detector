@@ -84,7 +84,9 @@ class ArucoLocalisation:
             self.config.screen_width, self.config.screen_height
         )
         self.detector = ArucoDetector(
-            self.config.camera_matrix, self.config.camera_distortion, self.config.marker_size
+            self.config.camera_matrix,
+            self.config.camera_distortion,
+            self.config.marker_size,
         )
         self.origin = OriginReference(log_dir)
 
@@ -99,7 +101,7 @@ class ArucoLocalisation:
 
         if shutdown_at_end:
             print("Performing shutdown...")
-            os.system("shutdown now h-")  # Uncomment for raspberry Pi
+            # os.system("shutdown now -h")  # Uncomment for raspberry Pi
 
     def loop(self):
         """Main loop."""
@@ -108,7 +110,7 @@ class ArucoLocalisation:
             return
         # Wait until the system is calibrated
         if not self.calibrated:
-            frame = self.calibration_loop(frame, ids, rvecs, tvecs)
+            frame = self.calibration_loop(frame, corners, ids, rvecs, tvecs)
         # When calibration has been achieved, the system is ready to start
         else:
             frame = self.detection_loop(frame, corners, ids, rvecs, tvecs)
@@ -133,7 +135,7 @@ class ArucoLocalisation:
         self.initial_time_s = datetime.now().timestamp()
         self.last_broadcast_time_s = self.initial_time_s
 
-    def calibration_loop(self, frame, ids, rvecs, tvecs) -> np.ndarray:
+    def calibration_loop(self, frame, corners, ids, rvecs, tvecs) -> np.ndarray:
         """Detect the calibration and OK marker to set the origin.
 
         Parameters
@@ -162,6 +164,7 @@ class ArucoLocalisation:
                 Colors.YELLOW,
             )
             frame = self.frame_decorator.draw_border(frame, Colors.YELLOW)
+            frame = self.detector.draw_markers(frame, corners, ids, rvecs, tvecs)
         elif detected(ids, self.config.marker.OK) and self.origin.initialised:
             self.calibrated = True
             self.reset_time()

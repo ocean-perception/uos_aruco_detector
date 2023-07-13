@@ -1,6 +1,7 @@
 import json
 import socket
 
+
 class UDPBroadcastServer:
     def __init__(self, ip, port):
         # -- Enable port reusage
@@ -20,5 +21,5 @@ class UDPBroadcastServer:
 
         self.socket.sendto(
             broadcast_string.encode("utf-8"),
-            ('<broadcast>', self.port),
+            ("<broadcast>", self.port),
         )
