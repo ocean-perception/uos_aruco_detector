@@ -68,6 +68,7 @@ def run_setup():
             "pandas",
             "numpy",
             "matplotlib",
+            "scipy",
             "opencv-python",
             "opencv-contrib-python",
         ],
