@@ -13,6 +13,7 @@ class UDPBroadcastServer:
         # -- Enable broadcasting mode
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         self.socket.settimeout(None)
+        self.ip = ip
         self.port = port
 
     def broadcast(self, message):
@@ -21,5 +22,5 @@ class UDPBroadcastServer:
 
         self.socket.sendto(
             broadcast_string.encode("utf-8"),
-            ("<broadcast>", self.port),
+            (self.ip, self.port),
         )
