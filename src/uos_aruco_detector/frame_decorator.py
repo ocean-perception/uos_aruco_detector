@@ -1,4 +1,5 @@
 import cv2
+from .version import __version__
 
 
 class Colors:
@@ -8,6 +9,7 @@ class Colors:
     GREEN = (0, 255, 0)
     YELLOW = (0, 255, 255)
     WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
 
 
 # -- Function to center the OpenCV text on the frame
@@ -25,31 +27,67 @@ def justify(text, frame, font, scale, thickness):
 class FrameDecorator:
     def __init__(self, screen_width, screen_height):
         # -- Font for the text in the image
-        self.font = cv2.FONT_HERSHEY_PLAIN
-        self.scale = 3
-        self.thickness = 4
         self.screen_width = screen_width
         self.screen_height = screen_height
-        cv2.namedWindow('Frame', cv2.WINDOW_FREERATIO)
-        cv2.setWindowProperty('Frame', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+        cv2.namedWindow("Frame", cv2.WINDOW_FREERATIO)
+        cv2.setWindowProperty("Frame", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
 
-    def draw_text(self, frame, msg, color, coord=None):
+    def draw_text(
+        self,
+        frame,
+        msg,
+        color,
+        coord=None,
+        font=cv2.FONT_HERSHEY_COMPLEX_SMALL,
+        scale=1,
+        thickness=1,
+    ):
         if coord is None:
-            coord = justify(msg, frame, self.font, self.scale, self.thickness)
+            coord = justify(msg, frame, font, scale, thickness)
         cv2.putText(
             frame,
             msg,
             coord,
-            self.font,
-            self.scale,
+            font,
+            scale,
+            Colors.BLACK,
+            thickness + 1,
+            cv2.LINE_AA,
+        )
+        cv2.putText(
+            frame,
+            msg,
+            coord,
+            font,
+            scale,
             color,
-            self.thickness,
+            thickness,
             cv2.LINE_AA,
         )
         return frame
 
     def draw_border(self, frame, color, thickness=20):
         cv2.rectangle(frame, (0, 0), (frame.shape[1], frame.shape[0]), color, thickness)
+        # show version number on the bottom right corner
+        self.draw_text(
+            frame,
+            "v" + str(__version__),
+            Colors.WHITE,
+            (frame.shape[1] - 100, frame.shape[0] - 30),
+            scale=1,
+            thickness=1,
+            font=cv2.FONT_HERSHEY_PLAIN,
+        )
+        # Show message to quit on the bottom left corner
+        self.draw_text(
+            frame,
+            "Press 'q' to quit",
+            Colors.WHITE,
+            (30, frame.shape[0] - 30),
+            scale=1,
+            thickness=1,
+            font=cv2.FONT_HERSHEY_PLAIN,
+        )
         return frame
 
     def stop(self):
