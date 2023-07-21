@@ -1,10 +1,6 @@
-import csv
-
 import cv2
 import numpy as np
 from scipy.spatial.transform import Rotation
-
-from .rotations import rotationMatrixToEulerAngles
 
 
 def inverse_prespective(rvec, tvec):

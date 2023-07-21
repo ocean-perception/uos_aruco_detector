@@ -1,6 +1,7 @@
 PyYAML,
 pandas,
 numpy,
+scipy,
 matplotlib,
 opencv-python,
 opencv-contrib-python,
