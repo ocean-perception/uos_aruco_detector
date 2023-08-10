@@ -85,8 +85,8 @@ def run_setup():
             "numpy>=1.23.4",
             "matplotlib>=3.5.1",
             "scipy>=1.8.0",
-            "opencv-python>=4.8.0",
-            "opencv-contrib-python>=4.8.0",
+            "opencv-python>=4.6.0",
+            "opencv-contrib-python>=4.6.0",
         ],
         cmdclass={
             "develop": PostDevelopCommand,
