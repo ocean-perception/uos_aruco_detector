@@ -11,7 +11,7 @@ class ArucoDetector:
         self.marker_size = marker_size
         # --- Define the aruco dictionary
         self.aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_100)
-        self.parameters = aruco.DetectorParameters()
+        self.parameters = aruco.DetectorParameters_create()
 
         # --- Capture the videocamera (this may also be a video or a picture)
         self.cap = cv2.VideoCapture(0)
