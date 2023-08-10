@@ -1,4 +1,5 @@
 import os
+import codecs
 import os.path
 
 from setuptools import find_packages, setup
@@ -19,6 +20,21 @@ classifiers = [
     "Topic :: Scientific/Engineering",
     "Topic :: Software Development",
 ]
+
+
+def read(rel_path):
+    here = os.path.abspath(os.path.dirname(__file__))
+    with codecs.open(os.path.join(here, rel_path), "r") as fp:
+        return fp.read()
+
+
+def get_version(rel_path):
+    for line in read(rel_path).splitlines():
+        if line.startswith("__version__"):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    else:
+        raise RuntimeError("Unable to find version string.")
 
 
 def try_download_configuration_file():
@@ -62,15 +78,15 @@ def run_setup():
         long_description = ""
     setup(
         name="uos_aruco_detector",
-        version="1.0.18",
+        version=get_version("src/uos_aruco_detector/version.py"),
         install_requires=[
-            "PyYAML",
-            "pandas",
-            "numpy",
-            "matplotlib",
-            "scipy",
-            "opencv-python",
-            "opencv-contrib-python",
+            "pyyaml>=6.0",
+            "pandas>=1.4.2",
+            "numpy>=1.23.4",
+            "matplotlib>=3.5.1",
+            "scipy>=1.8.0",
+            "opencv-python>=4.8.0",
+            "opencv-contrib-python>=4.8.0",
         ],
         cmdclass={
             "develop": PostDevelopCommand,
