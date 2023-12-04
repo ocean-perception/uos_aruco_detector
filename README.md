@@ -43,6 +43,13 @@ Check the configuration in the [configuration.yaml](https://github.com/ocean-per
 | BROADCAST_FREQ_10_HZ | 21 | Limit broadcast at 10 Hz             |
 | BROADCAST_ALWAYS     | 16 | Broadcast continuously               |
 
+## Check reception
+In a bash terminal, you can check the UDP broadcast using netcat. Type the following:
+```bash
+nc -ul 50000
+```
+where `50000` is the default port. Change this number if the port changes in your setup.
+
 
 ## Reference frames
 ```
