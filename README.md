@@ -51,6 +51,20 @@ nc -ul 50000
 where `50000` is the default port. Change this number if the port changes in your setup.
 
 
+### Message contents
+The fields are
+```
+  "epoch [s]",
+  "elapsed [s]",
+  "x [m]",
+  "y [m]",
+  "z [m]",
+  "roll [deg]",
+  "pitch [deg]",
+  "yaw [deg]",
+```
+
+
 ## Reference frames
 ```
 Here are the defined reference frames:
