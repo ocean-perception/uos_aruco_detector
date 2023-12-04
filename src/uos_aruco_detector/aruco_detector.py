@@ -5,11 +5,12 @@ from scipy.spatial.transform import Rotation
 
 
 class ArucoDetector:
-    def __init__(self, camera_matrix, camera_distortion, marker_size):
+    def __init__(self, camera_matrix, camera_distortion, marker_size, frame_type):
         # --- Get the camera calibration path and parameters
         self.camera_matrix = np.array(camera_matrix)
         self.camera_distortion = np.array(camera_distortion)
         self.marker_size = marker_size
+        self.frame_type = frame_type
         # --- Define the aruco dictionary
         self.aruco_dict = aruco.getPredefinedDictionary(aruco.DICT_4X4_100)
         self.parameters = aruco.DetectorParameters_create()
@@ -50,16 +51,49 @@ class ArucoDetector:
         aruco.drawDetectedMarkers(frame, corners, ids)
         # -- Draw detected aruco markers axis
         for i in range(len(ids)):
-            frame = self.draw_axes(
+            frame = self.drawMarkerAxes(
                 frame,
+                corners[i],
                 rvecs[i, 0, :],
                 tvecs[i, 0, :],
+                self.marker_size,
+                self.frame_type,
             )
         return frame
 
-    def draw_axes(self, frame, rvec, tvec) -> np.ndarray:
-        # -- Show the origin
-        cv2.drawFrameAxes(
-            frame, self.camera_matrix, self.camera_distortion, rvec, tvec, 0.1
+    def drawMarkerAxes(
+        self,
+        img,
+        corners,
+        rvec,
+        tvec,
+        axis_length=0.15,
+        frame_type="NED",
+    ) -> np.ndarray:
+        average_corner = np.mean(corners, axis=1)
+        axis = None
+        if frame_type == "NED":
+            axis = np.float32(
+                [[0, axis_length, 0], [axis_length, 0, 0], [0, 0, -axis_length]]
+            ).reshape(-1, 3)
+        elif frame_type == "ENU":
+            axis = np.float32(
+                [[axis_length, 0, 0], [0, axis_length, 0], [0, 0, axis_length]]
+            ).reshape(-1, 3)
+
+        # project 3D points to image plane
+        imgpts, _ = cv2.projectPoints(
+            axis, rvec, tvec, self.camera_matrix, self.camera_distortion
         )
-        return frame
+
+        corner = tuple(average_corner.ravel().astype(int))
+        img = cv2.line(
+            img, corner, tuple(imgpts[0].ravel().astype(int)), (0, 0, 255), 5
+        )
+        img = cv2.line(
+            img, corner, tuple(imgpts[1].ravel().astype(int)), (0, 255, 0), 5
+        )
+        img = cv2.line(
+            img, corner, tuple(imgpts[2].ravel().astype(int)), (255, 0, 0), 5
+        )
+        return img

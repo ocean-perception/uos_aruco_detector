@@ -41,14 +41,16 @@ class OriginReference:
         self.angles = np.array([0, 0, 0])
         self.tvec = np.array([0, 0, 0])
         self.rvec = np.array([0, 0, 0])
+        self.corners = None
         self.initialised = False
         self.frame = frame
 
-    def set(self, rvec, tvec):
+    def set(self, corners, rvec, tvec):
         # -- Store the origin location
         with open(
             self.path / "origin.csv", "w", encoding="utf-8", newline=""
         ) as stored_origin:
+            self.corners = corners
             self.tvec = tvec
             self.rvec = rvec
             self.initialised = True
@@ -83,11 +85,7 @@ class OriginReference:
             # Transform the position and rotation to NED
             tag_position = R @ composed_tvec
             tag_rotation = np.array([angles[1], angles[0], -angles[2]])
-
         tag_position = tag_position.reshape((3,))
-
-        print(self.frame, tag_position, tag_rotation)
-
         return tag_position, tag_rotation
 
     def get():
