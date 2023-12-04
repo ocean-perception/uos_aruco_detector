@@ -67,6 +67,9 @@ class OriginReference:
 
         rot = cv2.Rodrigues(composed_rvec)[0]
         tag_position = composed_tvec
+        r = Rotation.from_matrix(rot)
+        angles = r.as_euler("XYZ", degrees=True)
+        tag_rotation = np.array([angles[0], angles[1], angles[2]])
 
         if self.frame == "NED":
             # Rotation matrix for ENU to NED
@@ -79,11 +82,8 @@ class OriginReference:
             )
             # Transform the position and rotation to NED
             tag_position = R @ composed_tvec
-            rot = R @ rot
+            tag_rotation = np.array([angles[1], angles[0], -angles[2]])
 
-        r = Rotation.from_matrix(rot)
-        angles = r.as_euler("XYZ", degrees=True)
-        tag_rotation = np.array([angles[0], angles[1], angles[2]])
         tag_position = tag_position.reshape((3,))
 
         print(self.frame, tag_position, tag_rotation)
