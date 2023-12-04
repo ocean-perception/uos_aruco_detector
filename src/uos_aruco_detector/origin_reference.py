@@ -36,13 +36,13 @@ def relative_position(rvec1, tvec1, rvec2, tvec2):
 
 
 class OriginReference:
-    def __init__(self, path):
+    def __init__(self, path, frame="ENU"):
         self.path = path
         self.angles = np.array([0, 0, 0])
         self.tvec = np.array([0, 0, 0])
         self.rvec = np.array([0, 0, 0])
         self.initialised = False
-        self.frame = "ENU"
+        self.frame = frame
 
     def set(self, rvec, tvec):
         # -- Store the origin location

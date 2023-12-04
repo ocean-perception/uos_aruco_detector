@@ -88,7 +88,7 @@ class ArucoLocalisation:
             self.config.camera_distortion,
             self.config.marker_size,
         )
-        self.origin = OriginReference(log_dir)
+        self.origin = OriginReference(log_dir, self.config.frame)
 
         self.tag_loggers = {}
         self.stop_requested = False
