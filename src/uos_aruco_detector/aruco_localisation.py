@@ -120,7 +120,7 @@ class ArucoLocalisation:
     def draw_coordinate_system(self, frame) -> np.ndarray:
         """Draw the coordinate system."""
         frame = self.detector.draw_axes(
-            frame, self.origin.rvec, self.origin.tvec, self.config.frame
+            frame, self.origin.rvec, self.origin.tvec
         )
         return self.frame_decorator.draw_text(
             frame, self.config.frame, Colors.BLUE, (50, 100)
@@ -166,9 +166,7 @@ class ArucoLocalisation:
                 Colors.YELLOW,
             )
             frame = self.frame_decorator.draw_border(frame, Colors.YELLOW)
-            frame = self.detector.draw_markers(
-                frame, corners, ids, rvecs, tvecs, self.config.frame
-            )
+            frame = self.detector.draw_markers(frame, corners, ids, rvecs, tvecs)
         elif detected(ids, self.config.marker.OK) and self.origin.initialised:
             self.calibrated = True
             self.reset_time()
@@ -204,9 +202,7 @@ class ArucoLocalisation:
         """
         frame = self.draw_coordinate_system(frame)
         frame = self.frame_decorator.draw_border(frame, Colors.GREEN)
-        frame = self.detector.draw_markers(
-            frame, corners, ids, rvecs, tvecs, self.config.frame
-        )
+        frame = self.detector.draw_markers(frame, corners, ids, rvecs, tvecs)
 
         # Shorten name
         marker = self.config.marker
