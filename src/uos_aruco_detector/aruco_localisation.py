@@ -101,7 +101,7 @@ class ArucoLocalisation:
 
         if shutdown_at_end:
             print("Performing shutdown...")
-            # os.system("shutdown now -h")  # Uncomment for raspberry Pi
+            os.system("shutdown now -h")  # Uncomment for raspberry Pi
 
     def loop(self):
         """Main loop."""
@@ -119,9 +119,7 @@ class ArucoLocalisation:
 
     def draw_coordinate_system(self, frame) -> np.ndarray:
         """Draw the coordinate system."""
-        frame = self.detector.draw_axes(
-            frame, self.origin.rvec, self.origin.tvec
-        )
+        frame = self.detector.draw_axes(frame, self.origin.rvec, self.origin.tvec)
         return self.frame_decorator.draw_text(
             frame, self.config.frame, Colors.BLUE, (50, 100)
         )
