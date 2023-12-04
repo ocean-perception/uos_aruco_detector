@@ -57,11 +57,11 @@ class ArucoDetector:
             )
         return frame
 
-    def draw_axes(self, frame, rvec, tvec, frame="ENU") -> np.ndarray:
+    def draw_axes(self, frame, rvec, tvec, frame_type="ENU") -> np.ndarray:
         # -- Show the origin
-        if frame == "ENU":
+        if frame_type == "ENU":
             pass
-        elif frame == "NED":
+        elif frame_type == "NED":
             # Flip x and y and invert the z axis
             rotation_matrix = cv2.Rodrigues(rvec)[0]
             # Convert to Euler angles
