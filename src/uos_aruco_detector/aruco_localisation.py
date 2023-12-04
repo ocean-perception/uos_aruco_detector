@@ -166,7 +166,9 @@ class ArucoLocalisation:
                 Colors.YELLOW,
             )
             frame = self.frame_decorator.draw_border(frame, Colors.YELLOW)
-            frame = self.detector.draw_markers(frame, corners, ids, rvecs, tvecs)
+            frame = self.detector.draw_markers(
+                frame, corners, ids, rvecs, tvecs, self.config.frame
+            )
         elif detected(ids, self.config.marker.OK) and self.origin.initialised:
             self.calibrated = True
             self.reset_time()
@@ -202,7 +204,9 @@ class ArucoLocalisation:
         """
         frame = self.draw_coordinate_system(frame)
         frame = self.frame_decorator.draw_border(frame, Colors.GREEN)
-        frame = self.detector.draw_markers(frame, corners, ids, rvecs, tvecs)
+        frame = self.detector.draw_markers(
+            frame, corners, ids, rvecs, tvecs, self.config.frame
+        )
 
         # Shorten name
         marker = self.config.marker

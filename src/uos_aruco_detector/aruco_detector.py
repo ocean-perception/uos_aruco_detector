@@ -43,7 +43,7 @@ class ArucoDetector:
             )
         return frame, corners, ids, rvecs, tvecs
 
-    def draw_markers(self, frame, corners, ids, rvecs, tvecs) -> np.ndarray:
+    def draw_markers(self, frame, corners, ids, rvecs, tvecs, frame_type) -> np.ndarray:
         if ids is None:
             return frame
         # -- Draw detected aruco markers
@@ -54,6 +54,7 @@ class ArucoDetector:
                 frame,
                 rvecs[i, 0, :],
                 tvecs[i, 0, :],
+                frame_type,
             )
         return frame
 
