@@ -119,7 +119,9 @@ class ArucoLocalisation:
 
     def draw_coordinate_system(self, frame) -> np.ndarray:
         """Draw the coordinate system."""
-        frame = self.detector.draw_axes(frame, self.origin.rvec, self.origin.tvec)
+        frame = self.detector.draw_axes(
+            frame, self.origin.rvec, self.origin.tvec, self.config.frame
+        )
         return self.frame_decorator.draw_text(
             frame, self.config.frame, Colors.BLUE, (50, 100)
         )

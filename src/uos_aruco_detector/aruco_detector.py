@@ -1,6 +1,7 @@
 import cv2
 import cv2.aruco as aruco
 import numpy as np
+from scipy.spatial.transform import Rotation
 
 
 class ArucoDetector:
@@ -56,8 +57,22 @@ class ArucoDetector:
             )
         return frame
 
-    def draw_axes(self, frame, rvec, tvec) -> np.ndarray:
+    def draw_axes(self, frame, rvec, tvec, frame="ENU") -> np.ndarray:
         # -- Show the origin
+        if frame == "ENU":
+            pass
+        elif frame == "NED":
+            # Flip x and y and invert the z axis
+            rotation_matrix = cv2.Rodrigues(rvec)[0]
+            # Convert to Euler angles
+            r = Rotation.from_matrix(rotation_matrix)
+            angles = r.as_euler("XYZ", degrees=True)
+            # Convert back to rotation matrix
+            r = Rotation.from_euler("XYZ", angles, degrees=True)
+            rvec = cv2.Rodrigues(r)
+        else:
+            raise ValueError("Invalid frame. Only NED or ENU are supported.")
+
         cv2.drawFrameAxes(
             frame, self.camera_matrix, self.camera_distortion, rvec, tvec, 0.1
         )
