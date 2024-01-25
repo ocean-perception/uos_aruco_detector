@@ -226,14 +226,14 @@ class ArucoLocalisation:
 
         if detected(ids, marker.BROADCAST_ALWAYS) and detected(ids, marker.OK):
             self.config.broadcast_frequency = -1
+        elif detected(ids, marker.BROADCAST_FREQ_01_HZ) and detected(ids, marker.OK):
+            self.config.broadcast_frequency = 0.1
+        elif detected(ids, marker.BROADCAST_FREQ_02_HZ) and detected(ids, marker.OK):
+            self.config.broadcast_frequency = 0.2
         elif detected(ids, marker.BROADCAST_FREQ_1_HZ) and detected(ids, marker.OK):
             self.config.broadcast_frequency = 1.0
-        elif detected(ids, marker.BROADCAST_FREQ_2_HZ) and detected(ids, marker.OK):
-            self.config.broadcast_frequency = 2.0
         elif detected(ids, marker.BROADCAST_FREQ_5_HZ) and detected(ids, marker.OK):
             self.config.broadcast_frequency = 5.0
-        elif detected(ids, marker.BROADCAST_FREQ_10_HZ) and detected(ids, marker.OK):
-            self.config.broadcast_frequency = 10.0
         elif detected(ids, marker.BROADCAST_NEVER) and detected(ids, marker.OK):
             self.config.broadcast_frequency = 0.0
         elif detected(ids, marker.FRAME_NED) and detected(ids, marker.OK):

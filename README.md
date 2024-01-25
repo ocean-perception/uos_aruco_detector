@@ -37,10 +37,10 @@ Check the configuration in the [configuration.yaml](https://github.com/ocean-per
 | FRAME_NED            | 15 | Publish in NED                       |
 | CALIBRATION          | 17 | Calibrate origin frame               |
 | BROADCAST_NEVER      | 22 | Do not broadcast unless OK is shown  |
-| BROADCAST_FREQ_1_HZ  | 18 | Limit broadcast at 1 Hz              |
-| BROADCAST_FREQ_2_HZ  | 19 | Limit broadcast at 2 Hz              |
-| BROADCAST_FREQ_5_HZ  | 20 | Limit broadcast at 5 Hz              |
-| BROADCAST_FREQ_10_HZ | 21 | Limit broadcast at 10 Hz             |
+| BROADCAST_FREQ_01_HZ | 18 | Limit broadcast at 0.1 Hz            |
+| BROADCAST_FREQ_02_HZ | 19 | Limit broadcast at 0.2 Hz            |
+| BROADCAST_FREQ_1_HZ  | 20 | Limit broadcast at 1 Hz              |
+| BROADCAST_FREQ_5_HZ  | 21 | Limit broadcast at 5 Hz              |
 | BROADCAST_ALWAYS     | 16 | Broadcast continuously               |
 
 ## Check reception

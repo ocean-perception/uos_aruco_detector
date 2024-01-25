@@ -6,7 +6,7 @@ udp_server:
   port: 50000
 
 defaults:
-  broadcast_frequency: 10.0
+  broadcast_frequency: 0.2
   frame: NED
   marker_size: 0.1
   screen_width: 1920
@@ -27,8 +27,8 @@ markers:
   FRAME_NED: 15
   CALIBRATION: 17
   BROADCAST_NEVER: 27
-  BROADCAST_FREQ_1_HZ: 18
-  BROADCAST_FREQ_2_HZ: 19
-  BROADCAST_FREQ_5_HZ: 20
-  BROADCAST_FREQ_10_HZ: 26
+  BROADCAST_FREQ_01_HZ: 18
+  BROADCAST_FREQ_02_HZ: 19
+  BROADCAST_FREQ_1_HZ: 20
+  BROADCAST_FREQ_5_HZ: 26
   BROADCAST_ALWAYS: 16

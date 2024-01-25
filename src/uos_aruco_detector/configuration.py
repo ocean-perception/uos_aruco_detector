@@ -9,10 +9,10 @@ class Marker:
     OK: int = -1
     CALIBRATION: int = -1
     BROADCAST_NEVER: int = -1
+    BROADCAST_FREQ_01_HZ: int = -1
+    BROADCAST_FREQ_02_HZ: int = -1
     BROADCAST_FREQ_1_HZ: int = -1
-    BROADCAST_FREQ_2_HZ: int = -1
     BROADCAST_FREQ_5_HZ: int = -1
-    BROADCAST_FREQ_10_HZ: int = -1
     BROADCAST_ALWAYS: int = -1
     FRAME_NED: int = -1
     FRAME_ENU: int = -1
@@ -43,12 +43,14 @@ class Configuration:
         self.marker.OK = int(config["markers"]["OK"])
         self.marker.CALIBRATION = int(config["markers"]["CALIBRATION"])
         self.marker.BROADCAST_NEVER = int(config["markers"]["BROADCAST_NEVER"])
-        self.marker.BROADCAST_FREQ_1_HZ = int(config["markers"]["BROADCAST_FREQ_1_HZ"])
-        self.marker.BROADCAST_FREQ_2_HZ = int(config["markers"]["BROADCAST_FREQ_2_HZ"])
-        self.marker.BROADCAST_FREQ_5_HZ = int(config["markers"]["BROADCAST_FREQ_5_HZ"])
-        self.marker.BROADCAST_FREQ_10_HZ = int(
-            config["markers"]["BROADCAST_FREQ_10_HZ"]
+        self.marker.BROADCAST_FREQ_01_HZ = int(
+            config["markers"]["BROADCAST_FREQ_01_HZ"]
         )
+        self.marker.BROADCAST_FREQ_02_HZ = int(
+            config["markers"]["BROADCAST_FREQ_02_HZ"]
+        )
+        self.marker.BROADCAST_FREQ_1_HZ = int(config["markers"]["BROADCAST_FREQ_1_HZ"])
+        self.marker.BROADCAST_FREQ_5_HZ = int(config["markers"]["BROADCAST_FREQ_5_HZ"])
         self.marker.BROADCAST_ALWAYS = int(config["markers"]["BROADCAST_ALWAYS"])
         self.marker.FRAME_NED = int(config["markers"]["FRAME_NED"])
         self.marker.FRAME_ENU = int(config["markers"]["FRAME_ENU"])
