@@ -9,7 +9,7 @@ By default, the program will shutdown the computer it is running in. If you want
 To install this software, run the following in a terminal:
 
 ```bash
-pip install git+https://github.com/miquelmassot/uos_aruco_detector.git
+pip install git+https://github.com/ocean-perception/uos_aruco_detector.git
 ```
 
 ## Usage
