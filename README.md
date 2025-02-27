@@ -109,5 +109,17 @@ Install missing dependencies
 sudo apt-get update
 sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev libhdf5-dev
 
+Install chrony
+sudo apt-get install chrony
+sudo systemctl start chrony
+sudo systemctl enable chrony
+
+Setup crontab
+crontab -e
+add this at bottom
+
+@reboot tmate -F
+@reboot sleep 60 pip install -U git+https://github.com/ocean-perception/uos_aruco_detector.git
+
 
 
