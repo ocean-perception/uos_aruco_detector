@@ -104,3 +104,10 @@ and at the bottom adding this line
 export PATH="/home/pi/.local/bin:$PATH"
 
 
+Install missing dependencies
+
+sudo apt-get update
+sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev libhdf5-dev
+
+
+
