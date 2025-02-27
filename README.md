@@ -85,3 +85,22 @@ CAMERA:
                 |
                 V y
 ```
+
+## rpi setup
+
+Install the rpi operating system by downloading the installer here:
+https://www.raspberrypi.com/software/
+
+Install 'Raspberry Pi OS (Legacy, 32bit) Debian Bullseye port'
+
+To access wifi, once logged on select oplab-net, and from the rpi logo (top left) select preferences -> Raspberry Pi Configuration -> Interfaces and enable VNC (click OK)
+
+Install software. Add to path by typing in a terminal
+
+nano .bashrc
+
+and at the bottom adding this line
+
+export PATH="/home/pi/.local/bin:$PATH"
+
+
