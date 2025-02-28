@@ -4,9 +4,52 @@ ArUco marker detection and localisation.
 Given a calibration setup this program will detect ArUco markers, log and broadcast its positions.
 By default, the program will shutdown the computer it is running in. If you want to disable this behaviour, please supply the flag `--no-shutdown` when running it.
 
+## 1. Setup your Raspberry Pi
+
+Install the rpi operating system by downloading the installer here:
+https://www.raspberrypi.com/software/
+
+Install 'Raspberry Pi OS (Legacy, 32bit) Debian Bullseye port'
+
+To access wifi, once logged on select oplab-net, and from the rpi logo (top left) select preferences -> Raspberry Pi Configuration -> Interfaces and enable VNC (click OK)
+
+Install software. Add to path by typing in a terminal
+
+```bash
+nano .bashrc
+```
+and at the bottom adding this line
+
+```bash
+export PATH="/home/pi/.local/bin:$PATH"
+```
+
+Install chrony for time sync
+```bash
+sudo apt-get install chrony
+sudo systemctl start chrony
+sudo systemctl enable chrony
+```
+
+Setup crontab
+```bash
+crontab -e
+```
+add this at bottom
+
+```bash
+@reboot DISPLAY=:0 /bin/bash /home/pi/autostart_aruco.sh > /home/pi/cron_usr.log 2>&1
+```
+and add the file autostart_aruco.sh from this repository to the home directory
+Make it executable with 
+```bash
+chmod +x autostart_aruco.sh
+```
+
+Next time the code autostarts, it should install the software by itself and you can start using it.
 
 ## How to install
-To install this software, run the following in a terminal:
+To install this software manually, run the following in a terminal:
 
 ```bash
 pip install git+https://github.com/ocean-perception/uos_aruco_detector.git
@@ -84,46 +127,4 @@ CAMERA:
                 |
                 |
                 V y
-```
-
-## rpi setup
-
-Install the rpi operating system by downloading the installer here:
-https://www.raspberrypi.com/software/
-
-Install 'Raspberry Pi OS (Legacy, 32bit) Debian Bullseye port'
-
-To access wifi, once logged on select oplab-net, and from the rpi logo (top left) select preferences -> Raspberry Pi Configuration -> Interfaces and enable VNC (click OK)
-
-Install software. Add to path by typing in a terminal
-
-```bash
-nano .bashrc
-```
-and at the bottom adding this line
-
-```bash
-export PATH="/home/pi/.local/bin:$PATH"
-```
-
-Install chrony for time sync
-```bash
-sudo apt-get install chrony
-sudo systemctl start chrony
-sudo systemctl enable chrony
-```
-
-Setup crontab
-```bash
-crontab -e
-```
-add this at bottom
-
-```bash
-@reboot DISPLAY=:0 /bin/bash /home/pi/autostart_aruco.sh > /home/pi/cron_usr.log 2>&1
-```
-and add the file autostart_aruco.sh from this repository to the home directory
-Make it executable with 
-```bash
-chmod +x autostart_aruco.sh
 ```
