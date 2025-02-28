@@ -129,4 +129,5 @@ PATH=/home/pi/.local/bin:/usr/local/sbin:usr/local/bin:/usr/sbin:/usr/bin:/sbin>
 @reboot sleep 60 && pip install -U git+https://github.com/ocean-perception/uos_>
 @reboot /home/pi/.local/bin/uos_aruco_detector
 
-
+sudo nano /etc/rc.local
+/home/pi/.local/bin/uos_aruco_detector &
