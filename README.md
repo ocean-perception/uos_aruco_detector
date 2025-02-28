@@ -97,28 +97,34 @@ To access wifi, once logged on select oplab-net, and from the rpi logo (top left
 
 Install software. Add to path by typing in a terminal
 
+```bash
 nano .bashrc
-
+```
 and at the bottom adding this line
 
+```bash
 export PATH="/home/pi/.local/bin:$PATH"
+```
 
-Install missing dependencies
-
-sudo apt-get update
-sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev libhdf5-dev
-
-Install chrony
+Install chrony for time sync
+```bash
 sudo apt-get install chrony
 sudo systemctl start chrony
 sudo systemctl enable chrony
+```
 
 Setup crontab
+```bash
 crontab -e
+```
 add this at bottom
 
+```bash
 PATH=/usr/bin:/usr/sbin:/sbin:/usr/local/bin:/home/pi/.local/bin
 @reboot DISPLAY=:0 /bin/bash /home/pi/autostart_aruco.sh > /home/pi/cron.log 2>&1
-
-and add the file autostart_aruco.sh to the home directory
-Make it executable with chmod +x autostart_aruco.sh
+```
+and add the file autostart_aruco.sh from this repository to the home directory
+Make it executable with 
+```bash
+chmod +x autostart_aruco.sh
+```
