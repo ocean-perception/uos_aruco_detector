@@ -117,7 +117,7 @@ Setup crontab
 sudo crontab -e
 add this at bottom
 
-@reboot /bin/bash /home/pi/autostart_aruco.sh
+@reboot /bin/bash /home/pi/autostart_aruco.sh /home/pi/cron.log 2>&1
 
 and add the file autostart_aruco.sh to the home directory
 Make it executable with chmod x autostart_aruco.sh
