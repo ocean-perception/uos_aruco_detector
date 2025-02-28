@@ -11,9 +11,9 @@ https://www.raspberrypi.com/software/
 
 Install 'Raspberry Pi OS (Legacy, 32bit) Debian Bullseye port'
 
-To access wifi, once logged on select oplab-net, and from the rpi logo (top left) select preferences -> Raspberry Pi Configuration -> Interfaces and enable VNC (click OK)
+To access wifi, once logged on select your network (e.g., oplab-net), and from the rpi logo (top left) select Preferences -> Raspberry Pi Configuration -> Interfaces and enable VNC (click OK)
 
-Install software. Add to path by typing in a terminal
+Add where the software will go to the path by typing in a terminal
 
 ```bash
 nano .bashrc
@@ -24,14 +24,15 @@ and at the bottom adding this line
 export PATH="/home/pi/.local/bin:$PATH"
 ```
 
-Install chrony for time sync
+Install chrony for time synchronisation
+
 ```bash
 sudo apt-get install chrony
 sudo systemctl start chrony
 sudo systemctl enable chrony
 ```
 
-Setup crontab
+Setup crontab to autorun the software on boot
 ```bash
 crontab -e
 ```
@@ -41,12 +42,19 @@ add this at bottom
 @reboot DISPLAY=:0 /bin/bash /home/pi/autostart_aruco.sh > /home/pi/cron_usr.log 2>&1
 ```
 and add the file autostart_aruco.sh from this repository to the home directory
+
 Make it executable with 
 ```bash
 chmod +x autostart_aruco.sh
 ```
 
-Next time the code autostarts, it should install the software by itself and you can start using it.
+run the autostart_aruco.sh from the terminal, 
+```bash
+./autostart_aruco.sh
+```
+
+
+It should install the software by itself and you can start using it.
 
 ## How to install
 To install this software manually, run the following in a terminal:
