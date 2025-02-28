@@ -120,6 +120,6 @@ add this at bottom
 
 @reboot tmate -F
 @reboot sleep 60 pip install -U git+https://github.com/ocean-perception/uos_aruco_detector.git
-
+@reboot /home/pi/.local/bin/uos_aruco_detector
 
 
