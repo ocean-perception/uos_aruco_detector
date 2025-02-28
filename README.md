@@ -120,7 +120,7 @@ crontab -e
 add this at bottom
 
 ```bash
-@reboot DISPLAY=:0 /bin/bash /home/pi/autostart_aruco.sh > /home/pi/cron.log 2>&1
+@reboot DISPLAY=:0 /bin/bash /home/pi/autostart_aruco.sh > /home/pi/cron_usr.log 2>&1
 ```
 and add the file autostart_aruco.sh from this repository to the home directory
 Make it executable with 
