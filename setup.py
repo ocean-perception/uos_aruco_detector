@@ -86,10 +86,6 @@ def run_setup():
             "matplotlib==3.5.1",
             "scipy==1.8.0",
             "opencv-contrib-python==4.5.5.62",
-            "libblas-dev==3.9.3",
-            "liblapack-dev==3.9.3",
-            "libatlas-base-dev",
-            "libhdf5-dev==1.10.6",
         ],
         cmdclass={
             "develop": PostDevelopCommand,
