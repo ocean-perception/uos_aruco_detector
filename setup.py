@@ -87,8 +87,8 @@ def run_setup():
             "scipy==1.8.0",
             "opencv-contrib-python==4.5.5.62",
             "libblas-dev==3.9.0-3",
-            "liblapack-dev==3.9.0-3+deb11u1",
-            "libatlas-base-dev==3.10.3-10+rpi1",
+            "liblapack-dev==3.9.0-3",
+            "libatlas-base-dev==3.10.3-10",
             "libhdf5-dev==1.10.6+repack-4+deb11u1",
         ],
         cmdclass={
