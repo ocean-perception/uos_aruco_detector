@@ -9,4 +9,4 @@ else
 	echo "Offline"
 fi
 sleep 30
-uos_aruco_detector
+/home/pi/.local/bin/uos_aruco_detector
