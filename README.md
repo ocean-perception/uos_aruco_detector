@@ -27,11 +27,17 @@ export PATH="/home/pi/.local/bin:$PATH"
 Install chrony for time synchronisation
 
 ```bash
+sudo apt-get update
 sudo apt-get install chrony
 sudo systemctl start chrony
 sudo systemctl enable chrony
 ```
 
+Install some base libraries
+```bash
+sudo apt-get update
+sudo apt-get install libblas-dev==3.9.0-3+deb11u1 liblapack-dev==3.9.0-3+deb11u1 libatlas-base-dev==3.10.3-10+rpi1 libhdf5-dev==1.10.6+repack-4+deb11u1
+```
 Setup crontab to autorun the software on boot
 ```bash
 crontab -e
