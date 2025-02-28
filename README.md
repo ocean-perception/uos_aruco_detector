@@ -12,6 +12,7 @@ https://www.raspberrypi.com/software/
 Install 'Raspberry Pi OS (Legacy, 32bit) Debian Bullseye port'
 
 To access wifi, once logged on select your network (e.g., oplab-net), and from the rpi logo (top left) select Preferences -> Raspberry Pi Configuration -> Interfaces and enable VNC (click OK)
+Similarly, set display headless resolution to 1920 x 1080.
 
 Add where the software will go to the path by typing in a terminal
 
