@@ -121,4 +121,4 @@ PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/home/pi/.local/bin
 @reboot /bin/bash /home/pi/autostart_aruco.sh > /home/pi/cron.log 2>&1
 
 and add the file autostart_aruco.sh to the home directory
-Make it executable with chmod x autostart_aruco.sh
+Make it executable with chmod +x autostart_aruco.sh
