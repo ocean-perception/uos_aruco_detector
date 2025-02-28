@@ -103,7 +103,6 @@ and at the bottom adding this line
 
 export PATH="/home/pi/.local/bin:$PATH"
 
-
 Install missing dependencies
 
 sudo apt-get update
@@ -115,25 +114,10 @@ sudo systemctl start chrony
 sudo systemctl enable chrony
 
 Setup crontab
-crontab -e
+sudo crontab -e
 add this at bottom
 
-@reboot tmate -F
-@reboot sleep 60 pip install -U git+https://github.com/ocean-perception/uos_aruco_detector.git
-@reboot /home/pi/.local/bin/uos_aruco_detector
+@reboot /bin/bash /home/pi/autostart_aruco.sh
 
-chmod +x /home/pi/.local/bin/uos_aruco_detector
-
-PATH=/home/pi/.local/bin:/usr/local/sbin:usr/local/bin:/usr/sbin:/usr/bin:/sbin>
-@reboot tmate -F
-@reboot sleep 60 && pip install -U git+https://github.com/ocean-perception/uos_>
-@reboot /home/pi/.local/bin/uos_aruco_detector
-PATH=/home/pi/.local/bin:/usr/local/sbin:usr/local/bin:/usr/sbin:/usr/bin:/sbin>
-@reboot tmate -F
-@reboot sleep 60 && pip install -U git+https://github.com/ocean-perception/uos_>
-@reboot /home/pi/.local/bin/uos_aruco_detector > /home/pi/cron_output.log 2>&1
-
-
-
-sudo nano /etc/rc.local
-/home/pi/.local/bin/uos_aruco_detector &
+and add the file autostart_aruco.sh to the home directory
+Make it executable with chmod x autostart_aruco.sh
