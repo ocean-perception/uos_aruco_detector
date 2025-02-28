@@ -8,5 +8,5 @@ if [ $? -eq 0 ]; then
 else
 	echo "Offline"
 fi
-sleep 60
+sleep 30
 uos_aruco_detector
