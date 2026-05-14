@@ -11,5 +11,5 @@ Restart=on-failure
 RestartSec=5
 Environment="DISPLAY=:0"
 
-[Install}
+[Install]
 WantedBy=multi-user.target
