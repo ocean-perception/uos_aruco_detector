@@ -41,15 +41,12 @@ Install some base libraries
 sudo apt-get update
 sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev libhdf5-dev
 ```
-Setup crontab to autorun the software on boot
-```bash
-crontab -e
-```
-add this at bottom
-
-```bash
-@reboot DISPLAY=:0 /bin/bash /home/pi/autostart_aruco.sh > /home/pi/cron_usr.log 2>&1
-```
+Setup a systemd service file to autorun the software on boot
+copy the file aruco_start.service from this repository to the systemd directory at /etc/systemd/system
+then enable the service file 
+'''bash
+sudo systemctl enable aruco_start.service
+'''
 and add the file autostart_aruco.sh from this repository to the /home/pi directory
 
 Make it executable with 
