@@ -44,10 +44,11 @@ sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev libhdf5-dev
 Setup a systemd service file to autorun the software on boot
 
 copy the file aruco_start.service from this repository to the systemd directory at /etc/systemd/system
+
 then enable the service file 
-'''bash
+```bash
 sudo systemctl enable aruco_start.service
-'''
+```
 and add the file autostart_aruco.sh from this repository to the /home/pi directory
 
 Make it executable with 
