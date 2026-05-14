@@ -42,6 +42,7 @@ sudo apt-get update
 sudo apt-get install libblas-dev liblapack-dev libatlas-base-dev libhdf5-dev
 ```
 Setup a systemd service file to autorun the software on boot
+
 copy the file aruco_start.service from this repository to the systemd directory at /etc/systemd/system
 then enable the service file 
 '''bash
